@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    03/01/2022  15:27:40  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    03/01/2022  15:45:41  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
@@ -59,7 +59,7 @@ LINK MAP OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
             CODE    0003H     0008H     UNIT         ?PR?_TEST_SEND?HARDWARE
             CODE    000BH     0003H     ABSOLUTE     
             CODE    000EH     0013H     UNIT         ?PR?UARTINIT?HARDWARE
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:27:40  PAGE 2
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:45:41  PAGE 2
 
 
                     0021H     0002H                  *** GAP ***
@@ -73,24 +73,24 @@ LINK MAP OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
             CODE    100CH     00F9H     UNIT         ?PR?PROGRAMRUN?AUTOMATION
             CODE    1105H     00ACH     UNIT         ?PR?KEYTRIGGER?HARDWARE
             CODE    11B1H     00ABH     UNIT         ?PR?T0_ISR?MAIN
-            CODE    125CH     0088H     UNIT         ?PR?_UART_MN?HARDWARE
-            CODE    12E4H     007EH     UNIT         ?PR?DATA_CL?DATA
-            CODE    1362H     0069H     UNIT         ?PR?_MUSIC?AUTOMATION
-            CODE    13CBH     0059H     UNIT         ?PR?UART_ISR?DATA
-            CODE    1424H     0026H     UNIT         ?PR?_UART_SEND?HARDWARE
-            CODE    144AH     001AH     UNIT         ?PR?_IAPREADUCHAR?EEPROM_IAP
-            CODE    1464H     001AH     UNIT         ?PR?_IAPPROGRAMUCHAR?EEPROM_IAP
-            CODE    147EH     0018H     UNIT         ?PR?_IAPERASESECTOR?EEPROM_IAP
-            CODE    1496H     0018H     UNIT         ?PR?TIM_INIT?HARDWARE
-            CODE    14AEH     0010H     UNIT         ?PR?MAINCYCLE?STATE
-            CODE    14BEH     000DH     UNIT         ?PR?IAPIDLE?EEPROM_IAP
-            CODE    14CBH     000CH     UNIT         ?C_C51STARTUP
-            CODE    14D7H     000BH     UNIT         ?PR?MAIN?MAIN
-            CODE    14E2H     000BH     UNIT         ?PR?DELAY_MN?HARDWARE
-            CODE    14EDH     000AH     UNIT         ?CO?AUTOMATION
-            CODE    14F7H     0006H     UNIT         ?PR?HARDWAREINIT?MAIN
-            CODE    14FDH     0006H     UNIT         ?PR?DATAINIT?MAIN
-            CODE    1503H     0005H     UNIT         ?CO?DATA
+            CODE    125CH     008DH     UNIT         ?PR?DATA_CL?DATA
+            CODE    12E9H     0088H     UNIT         ?PR?_UART_MN?HARDWARE
+            CODE    1371H     0069H     UNIT         ?PR?_MUSIC?AUTOMATION
+            CODE    13DAH     0059H     UNIT         ?PR?UART_ISR?DATA
+            CODE    1433H     0026H     UNIT         ?PR?_UART_SEND?HARDWARE
+            CODE    1459H     001AH     UNIT         ?PR?_IAPREADUCHAR?EEPROM_IAP
+            CODE    1473H     001AH     UNIT         ?PR?_IAPPROGRAMUCHAR?EEPROM_IAP
+            CODE    148DH     0018H     UNIT         ?PR?_IAPERASESECTOR?EEPROM_IAP
+            CODE    14A5H     0018H     UNIT         ?PR?TIM_INIT?HARDWARE
+            CODE    14BDH     0010H     UNIT         ?PR?MAINCYCLE?STATE
+            CODE    14CDH     000DH     UNIT         ?PR?IAPIDLE?EEPROM_IAP
+            CODE    14DAH     000CH     UNIT         ?C_C51STARTUP
+            CODE    14E6H     000BH     UNIT         ?PR?MAIN?MAIN
+            CODE    14F1H     000BH     UNIT         ?PR?DELAY_MN?HARDWARE
+            CODE    14FCH     000AH     UNIT         ?CO?AUTOMATION
+            CODE    1506H     0006H     UNIT         ?PR?HARDWAREINIT?MAIN
+            CODE    150CH     0006H     UNIT         ?PR?DATAINIT?MAIN
+            CODE    1512H     0005H     UNIT         ?CO?DATA
 
 
 
@@ -119,7 +119,7 @@ SEGMENT                                    BIT_GROUP          DATA_GROUP        
   +--> ?PR?MOTOR_SET?MOTOR
 
 ?PR?PROGRAMRUN?AUTOMATION               -----    -----      0008H    0004H      -----    -----
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:27:40  PAGE 3
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:45:41  PAGE 3
 
 
   +--> ?PR?_M_ROM?AUTOMATION
@@ -155,14 +155,14 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   D:00C8H         PUBLIC        P5
   D:0022H         PUBLIC        F_ROM_Temp
   D:00A8H         PUBLIC        IE
-  C:14FDH         PUBLIC        DataInit
+  C:150CH         PUBLIC        DataInit
   C:11B1H         PUBLIC        T0_Isr
   D:00B8H         PUBLIC        IP
   D:0023H         PUBLIC        DW
   B:0021H.0       PUBLIC        F_Flag
   D:0034H         PUBLIC        F_ROM_Set
   D:00D8H         PUBLIC        CCON
-  C:14D7H         PUBLIC        main
+  C:14E6H         PUBLIC        main
   I:007AH         PUBLIC        WaitTime
   I:007EH         PUBLIC        DW_XZ
   I:009FH         PUBLIC        R_Data
@@ -173,13 +173,13 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   D:0035H         PUBLIC        F_Motor
   I:00B7H         PUBLIC        R_CL
   D:0045H         PUBLIC        F_Step
-  C:14F7H         PUBLIC        HardwareInit
+  C:1506H         PUBLIC        HardwareInit
   B:0088H.5       PUBLIC        TF0
   D:008CH         PUBLIC        TH0
   D:0046H         PUBLIC        P_Step
   D:008AH         PUBLIC        TL0
   D:0047H         PUBLIC        T_Step
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:27:40  PAGE 4
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:45:41  PAGE 4
 
 
   D:0049H         PUBLIC        P_RomFlag
@@ -200,27 +200,27 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   D:0079H         PUBLIC        T_ROM_D2
   D:00D0H         PUBLIC        PSW
   -------         PROC          HARDWAREINIT
-  C:14F7H         LINE#         29
-  C:14F7H         LINE#         30
-  C:14F7H         LINE#         31
-  C:14FAH         LINE#         32
+  C:1506H         LINE#         29
+  C:1506H         LINE#         30
+  C:1506H         LINE#         31
+  C:1509H         LINE#         32
   -------         ENDPROC       HARDWAREINIT
   -------         PROC          DATAINIT
-  C:14FDH         LINE#         35
-  C:14FDH         LINE#         36
-  C:14FDH         LINE#         37
-  C:14FFH         LINE#         38
-  C:1502H         LINE#         39
+  C:150CH         LINE#         35
+  C:150CH         LINE#         36
+  C:150CH         LINE#         37
+  C:150EH         LINE#         38
+  C:1511H         LINE#         39
   -------         ENDPROC       DATAINIT
   -------         PROC          MAIN
-  C:14D7H         LINE#         41
-  C:14D7H         LINE#         42
-  C:14D7H         LINE#         43
-  C:14DAH         LINE#         44
-  C:14DDH         LINE#         45
-  C:14DDH         LINE#         46
-  C:14DDH         LINE#         47
-  C:14E0H         LINE#         48
+  C:14E6H         LINE#         41
+  C:14E6H         LINE#         42
+  C:14E6H         LINE#         43
+  C:14E9H         LINE#         44
+  C:14ECH         LINE#         45
+  C:14ECH         LINE#         46
+  C:14ECH         LINE#         47
+  C:14EFH         LINE#         48
   -------         ENDPROC       MAIN
   -------         PROC          T0_ISR
   C:11B1H         LINE#         51
@@ -239,7 +239,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   C:1241H         LINE#         65
   C:1241H         LINE#         66
   -------         ENDPROC       T0_ISR
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:27:40  PAGE 5
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:45:41  PAGE 5
 
 
   -------         ENDMOD        MAIN
@@ -250,19 +250,19 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   D:0090H         PUBLIC        P1
   D:00A0H         PUBLIC        P2
   D:00B0H         PUBLIC        P3
-  C:147EH         PUBLIC        _IapEraseSector
+  C:148DH         PUBLIC        _IapEraseSector
   D:00C0H         PUBLIC        P4
   D:00C8H         PUBLIC        P5
   B:00A8H.7       PUBLIC        EA
   D:00A8H         PUBLIC        IE
-  C:1464H         PUBLIC        _IapProgramuchar
+  C:1473H         PUBLIC        _IapProgramuchar
   D:00C5H         PUBLIC        IAP_CMD
   D:00B8H         PUBLIC        IP
-  C:14BEH         PUBLIC        IapIdle
+  C:14CDH         PUBLIC        IapIdle
   D:00C3H         PUBLIC        IAP_ADDRH
   D:00C4H         PUBLIC        IAP_ADDRL
   D:00D8H         PUBLIC        CCON
-  C:144AH         PUBLIC        _IapReaduchar
+  C:1459H         PUBLIC        _IapReaduchar
   D:0098H         PUBLIC        SCON
   D:0088H         PUBLIC        TCON
   D:00C7H         PUBLIC        IAP_CONTR
@@ -270,68 +270,68 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   D:00C6H         PUBLIC        IAP_TRIG
   D:00D0H         PUBLIC        PSW
   -------         PROC          IAPIDLE
-  C:14BEH         LINE#         6
-  C:14BEH         LINE#         7
-  C:14BEH         LINE#         8
-  C:14C1H         LINE#         9
-  C:14C3H         LINE#         10
-  C:14C5H         LINE#         11
-  C:14C8H         LINE#         12
-  C:14CAH         LINE#         13
+  C:14CDH         LINE#         6
+  C:14CDH         LINE#         7
+  C:14CDH         LINE#         8
+  C:14D0H         LINE#         9
+  C:14D2H         LINE#         10
+  C:14D4H         LINE#         11
+  C:14D7H         LINE#         12
+  C:14D9H         LINE#         13
   -------         ENDPROC       IAPIDLE
   -------         PROC          _IAPREADUCHAR
   D:0006H         SYMBOL        addr
   -------         DO            
   D:0007H         SYMBOL        dat
   -------         ENDDO         
-  C:144AH         LINE#         18
-  C:144AH         LINE#         19
-  C:144AH         LINE#         22
-  C:144DH         LINE#         23
-  C:1450H         LINE#         24
-  C:1452H         LINE#         25
-  C:1454H         LINE#         26
-  C:1456H         LINE#         27
-  C:1459H         LINE#         28
-  C:145CH         LINE#         29
-  C:145DH         LINE#         30
-  C:145FH         LINE#         31
-  C:1461H         LINE#         32
+  C:1459H         LINE#         18
+  C:1459H         LINE#         19
+  C:1459H         LINE#         22
+  C:145CH         LINE#         23
+  C:145FH         LINE#         24
+  C:1461H         LINE#         25
+  C:1463H         LINE#         26
+  C:1465H         LINE#         27
+  C:1468H         LINE#         28
+  C:146BH         LINE#         29
+  C:146CH         LINE#         30
+  C:146EH         LINE#         31
+  C:1470H         LINE#         32
   -------         ENDPROC       _IAPREADUCHAR
   -------         PROC          _IAPPROGRAMUCHAR
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:27:40  PAGE 6
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:45:41  PAGE 6
 
 
   D:0006H         SYMBOL        addr
   D:0005H         SYMBOL        dat
-  C:1464H         LINE#         40
-  C:1464H         LINE#         41
-  C:1464H         LINE#         42
-  C:1467H         LINE#         43
-  C:146AH         LINE#         44
-  C:146CH         LINE#         45
-  C:146EH         LINE#         46
-  C:1470H         LINE#         47
-  C:1472H         LINE#         48
-  C:1475H         LINE#         49
-  C:1478H         LINE#         50
-  C:1479H         LINE#         51
-  C:147BH         LINE#         52
+  C:1473H         LINE#         40
+  C:1473H         LINE#         41
+  C:1473H         LINE#         42
+  C:1476H         LINE#         43
+  C:1479H         LINE#         44
+  C:147BH         LINE#         45
+  C:147DH         LINE#         46
+  C:147FH         LINE#         47
+  C:1481H         LINE#         48
+  C:1484H         LINE#         49
+  C:1487H         LINE#         50
+  C:1488H         LINE#         51
+  C:148AH         LINE#         52
   -------         ENDPROC       _IAPPROGRAMUCHAR
   -------         PROC          _IAPERASESECTOR
   D:0006H         SYMBOL        addr
-  C:147EH         LINE#         58
-  C:147EH         LINE#         59
-  C:147EH         LINE#         60
-  C:1481H         LINE#         61
-  C:1484H         LINE#         62
-  C:1486H         LINE#         63
-  C:1488H         LINE#         64
-  C:148AH         LINE#         65
-  C:148DH         LINE#         66
-  C:1490H         LINE#         67
-  C:1491H         LINE#         68
-  C:1493H         LINE#         69
+  C:148DH         LINE#         58
+  C:148DH         LINE#         59
+  C:148DH         LINE#         60
+  C:1490H         LINE#         61
+  C:1493H         LINE#         62
+  C:1495H         LINE#         63
+  C:1497H         LINE#         64
+  C:1499H         LINE#         65
+  C:149CH         LINE#         66
+  C:149FH         LINE#         67
+  C:14A0H         LINE#         68
+  C:14A2H         LINE#         69
   -------         ENDPROC       _IAPERASESECTOR
   -------         ENDMOD        EEPROM_IAP
 
@@ -352,17 +352,17 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   B:00B0H.3       PUBLIC        HW
   B:00B0H.2       PUBLIC        YK
   D:00D8H         PUBLIC        CCON
-  C:1424H         PUBLIC        _UART_Send
+  C:1433H         PUBLIC        _UART_Send
   D:0099H         PUBLIC        SBUF
   D:0087H         PUBLIC        PCON
   D:0098H         PUBLIC        SCON
   C:000EH         PUBLIC        UartInit
   D:0089H         PUBLIC        TMOD
   D:0088H         PUBLIC        TCON
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:27:40  PAGE 7
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:45:41  PAGE 7
 
 
-  C:125CH         PUBLIC        _UART_MN
+  C:12E9H         PUBLIC        _UART_MN
   D:008EH         PUBLIC        AUXR
   D:00C7H         PUBLIC        IAP_CONTR
   B:00A8H.1       PUBLIC        ET0
@@ -372,24 +372,24 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   B:00B0H.7       PUBLIC        XD2
   D:008AH         PUBLIC        TL0
   B:0088H.4       PUBLIC        TR0
-  C:1496H         PUBLIC        TIM_Init
+  C:14A5H         PUBLIC        TIM_Init
   D:009CH         PUBLIC        BRT
-  C:14E2H         PUBLIC        Delay_MN
+  C:14F1H         PUBLIC        Delay_MN
   B:00B0H.5       PUBLIC        MN_RTX
   D:00D0H         PUBLIC        PSW
   -------         PROC          TIM_INIT
-  C:1496H         LINE#         3
-  C:1496H         LINE#         4
-  C:1496H         LINE#         5
-  C:1499H         LINE#         6
-  C:149CH         LINE#         7
-  C:149FH         LINE#         8
-  C:14A2H         LINE#         9
-  C:14A5H         LINE#         10
-  C:14A7H         LINE#         11
-  C:14A9H         LINE#         12
-  C:14ABH         LINE#         13
-  C:14ADH         LINE#         14
+  C:14A5H         LINE#         3
+  C:14A5H         LINE#         4
+  C:14A5H         LINE#         5
+  C:14A8H         LINE#         6
+  C:14ABH         LINE#         7
+  C:14AEH         LINE#         8
+  C:14B1H         LINE#         9
+  C:14B4H         LINE#         10
+  C:14B6H         LINE#         11
+  C:14B8H         LINE#         12
+  C:14BAH         LINE#         13
+  C:14BCH         LINE#         14
   -------         ENDPROC       TIM_INIT
   -------         PROC          UARTINIT
   C:000EH         LINE#         16
@@ -407,19 +407,19 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   D:0007H         SYMBOL        i
   D:0006H         SYMBOL        j
   -------         ENDDO         
-  C:14E2H         LINE#         26
-  C:14E2H         LINE#         27
-  C:14E2H         LINE#         29
-  C:14E3H         LINE#         30
-  C:14E4H         LINE#         31
-  C:14E6H         LINE#         32
-  C:14E8H         LINE#         34
-  C:14E8H         LINE#         35
-  C:14EAH         LINE#         37
-  C:14ECH         LINE#         38
+  C:14F1H         LINE#         26
+  C:14F1H         LINE#         27
+  C:14F1H         LINE#         29
+  C:14F2H         LINE#         30
+  C:14F3H         LINE#         31
+  C:14F5H         LINE#         32
+  C:14F7H         LINE#         34
+  C:14F7H         LINE#         35
+  C:14F9H         LINE#         37
+  C:14FBH         LINE#         38
   -------         ENDPROC       DELAY_MN
   -------         PROC          _UART_MN
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:27:40  PAGE 8
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:45:41  PAGE 8
 
 
   D:000DH         SYMBOL        dat
@@ -437,61 +437,61 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   B:0020H.7       SYMBOL        UartData8
   -------         ENDDO         
   -------         ENDDO         
-  C:125CH         LINE#         40
-  C:1264H         LINE#         41
-  C:1264H         LINE#         43
-  C:126CH         LINE#         44
-  C:126CH         LINE#         46
-  C:126EH         LINE#         47
-  C:1280H         LINE#         48
-  C:1285H         LINE#         49
-  C:1289H         LINE#         50
-  C:128DH         LINE#         51
-  C:1291H         LINE#         52
-  C:1295H         LINE#         53
-  C:1299H         LINE#         54
-  C:129CH         LINE#         55
-  C:129EH         LINE#         56
-  C:12A1H         LINE#         57
-  C:12A5H         LINE#         58
-  C:12A8H         LINE#         59
-  C:12ACH         LINE#         60
-  C:12AFH         LINE#         61
-  C:12B3H         LINE#         62
-  C:12B6H         LINE#         63
-  C:12BAH         LINE#         64
-  C:12BDH         LINE#         65
-  C:12C1H         LINE#         66
-  C:12C4H         LINE#         67
-  C:12C8H         LINE#         68
-  C:12CBH         LINE#         69
-  C:12CFH         LINE#         70
-  C:12D2H         LINE#         71
-  C:12D6H         LINE#         72
-  C:12D9H         LINE#         73
-  C:12DBH         LINE#         74
-  C:12DEH         LINE#         75
-  C:12E0H         LINE#         76
-  C:12E3H         LINE#         77
+  C:12E9H         LINE#         40
+  C:12F1H         LINE#         41
+  C:12F1H         LINE#         43
+  C:12F9H         LINE#         44
+  C:12F9H         LINE#         46
+  C:12FBH         LINE#         47
+  C:130DH         LINE#         48
+  C:1312H         LINE#         49
+  C:1316H         LINE#         50
+  C:131AH         LINE#         51
+  C:131EH         LINE#         52
+  C:1322H         LINE#         53
+  C:1326H         LINE#         54
+  C:1329H         LINE#         55
+  C:132BH         LINE#         56
+  C:132EH         LINE#         57
+  C:1332H         LINE#         58
+  C:1335H         LINE#         59
+  C:1339H         LINE#         60
+  C:133CH         LINE#         61
+  C:1340H         LINE#         62
+  C:1343H         LINE#         63
+  C:1347H         LINE#         64
+  C:134AH         LINE#         65
+  C:134EH         LINE#         66
+  C:1351H         LINE#         67
+  C:1355H         LINE#         68
+  C:1358H         LINE#         69
+  C:135CH         LINE#         70
+  C:135FH         LINE#         71
+  C:1363H         LINE#         72
+  C:1366H         LINE#         73
+  C:1368H         LINE#         74
+  C:136BH         LINE#         75
+  C:136DH         LINE#         76
+  C:1370H         LINE#         77
   -------         ENDPROC       _UART_MN
   -------         PROC          _UART_SEND
   D:0016H         SYMBOL        dat
   D:0005H         SYMBOL        n
   -------         DO            
   D:0007H         SYMBOL        i
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:27:40  PAGE 9
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:45:41  PAGE 9
 
 
   -------         ENDDO         
-  C:1424H         LINE#         79
-  C:142AH         LINE#         80
-  C:142AH         LINE#         82
-  C:1431H         LINE#         83
-  C:1431H         LINE#         84
-  C:1441H         LINE#         85
-  C:1443H         LINE#         86
-  C:1446H         LINE#         88
-  C:1449H         LINE#         89
+  C:1433H         LINE#         79
+  C:1439H         LINE#         80
+  C:1439H         LINE#         82
+  C:1440H         LINE#         83
+  C:1440H         LINE#         84
+  C:1450H         LINE#         85
+  C:1452H         LINE#         86
+  C:1455H         LINE#         88
+  C:1458H         LINE#         89
   -------         ENDPROC       _UART_SEND
   -------         PROC          _TEST_SEND
   D:0007H         SYMBOL        i
@@ -539,7 +539,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   C:1156H         LINE#         134
   C:1164H         LINE#         135
   C:1164H         LINE#         136
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:27:40  PAGE 10
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:45:41  PAGE 10
 
 
   C:1169H         LINE#         137
@@ -599,7 +599,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   C:0D05H         PUBLIC        MotorInit
   D:0098H         PUBLIC        SCON
   D:0088H         PUBLIC        TCON
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:27:40  PAGE 11
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:45:41  PAGE 11
 
 
   B:0080H.0       PUBLIC        Motor1
@@ -659,7 +659,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   C:0E3DH         LINE#         37
   C:0E48H         LINE#         38
   C:0E53H         LINE#         39
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:27:40  PAGE 12
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:45:41  PAGE 12
 
 
   C:0E5EH         LINE#         40
@@ -719,7 +719,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   C:066BH         LINE#         93
   C:066EH         LINE#         94
   C:0670H         LINE#         95
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:27:40  PAGE 13
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:45:41  PAGE 13
 
 
   C:0670H         LINE#         96
@@ -779,7 +779,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   C:0812H         LINE#         150
   C:0812H         LINE#         151
   C:0833H         LINE#         152
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:27:40  PAGE 14
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:45:41  PAGE 14
 
 
   C:0833H         LINE#         153
@@ -839,7 +839,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   D:0080H         PUBLIC        P0
   D:0090H         PUBLIC        P1
   D:00A0H         PUBLIC        P2
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:27:40  PAGE 15
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:45:41  PAGE 15
 
 
   D:00B0H         PUBLIC        P3
@@ -850,19 +850,19 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   D:00D8H         PUBLIC        CCON
   D:0098H         PUBLIC        SCON
   D:0088H         PUBLIC        TCON
-  C:14AEH         PUBLIC        MainCycle
+  C:14BDH         PUBLIC        MainCycle
   D:00D0H         PUBLIC        PSW
   -------         PROC          MAINCYCLE
-  C:14AEH         LINE#         3
-  C:14AEH         LINE#         4
-  C:14AEH         LINE#         5
-  C:14B1H         LINE#         6
-  C:14B4H         LINE#         7
-  C:14B4H         LINE#         8
-  C:14B7H         LINE#         9
-  C:14BAH         LINE#         10
-  C:14BDH         LINE#         11
-  C:14BDH         LINE#         12
+  C:14BDH         LINE#         3
+  C:14BDH         LINE#         4
+  C:14BDH         LINE#         5
+  C:14C0H         LINE#         6
+  C:14C3H         LINE#         7
+  C:14C3H         LINE#         8
+  C:14C6H         LINE#         9
+  C:14C9H         LINE#         10
+  C:14CCH         LINE#         11
+  C:14CCH         LINE#         12
   -------         ENDPROC       MAINCYCLE
   -------         ENDMOD        STATE
 
@@ -872,7 +872,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   D:0090H         PUBLIC        P1
   D:00A0H         PUBLIC        P2
   D:00B0H         PUBLIC        P3
-  C:1362H         PUBLIC        _Music
+  C:1371H         PUBLIC        _Music
   D:00C0H         PUBLIC        P4
   D:00C8H         PUBLIC        P5
   D:00A8H         PUBLIC        IE
@@ -882,24 +882,24 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   D:00D8H         PUBLIC        CCON
   D:0098H         PUBLIC        SCON
   D:0088H         PUBLIC        TCON
-  C:14EDH         SYMBOL        _?ix1000
+  C:14FCH         SYMBOL        _?ix1000
   D:00D0H         PUBLIC        PSW
   -------         PROC          _MUSIC
   D:000CH         SYMBOL        num
   -------         DO            
   I:00D0H         SYMBOL        Music_Selection
   -------         ENDDO         
-  C:1362H         LINE#         3
-  C:1364H         LINE#         4
-  C:1364H         LINE#         5
-  C:1377H         LINE#         6
-  C:137BH         LINE#         7
-  C:13ACH         LINE#         8
-  C:13C1H         LINE#         9
+  C:1371H         LINE#         3
+  C:1373H         LINE#         4
+  C:1373H         LINE#         5
+  C:1386H         LINE#         6
+  C:138AH         LINE#         7
+  C:13BBH         LINE#         8
+  C:13D0H         LINE#         9
   -------         ENDPROC       _MUSIC
   -------         PROC          _M_ROM
   D:000CH         SYMBOL        n
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:27:40  PAGE 16
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:45:41  PAGE 16
 
 
   -------         DO            
@@ -959,7 +959,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   C:03AAH         LINE#         64
   C:03C1H         LINE#         65
   C:03C4H         LINE#         66
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:27:40  PAGE 17
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:45:41  PAGE 17
 
 
   C:03C4H         LINE#         67
@@ -1019,7 +1019,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   C:1098H         LINE#         117
   C:109BH         LINE#         118
   C:109BH         LINE#         121
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:27:40  PAGE 18
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:45:41  PAGE 18
 
 
   C:10BDH         LINE#         122
@@ -1050,43 +1050,43 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   D:00B0H         PUBLIC        P3
   D:00C0H         PUBLIC        P4
   D:00C8H         PUBLIC        P5
-  C:12E4H         PUBLIC        DATA_CL
+  C:125CH         PUBLIC        DATA_CL
   D:00A8H         PUBLIC        IE
   D:00B8H         PUBLIC        IP
   B:0098H.0       PUBLIC        RI
   D:00D8H         PUBLIC        CCON
   C:0839H         PUBLIC        _DATA_Que
-  C:13CBH         PUBLIC        Uart_Isr
+  C:13DAH         PUBLIC        Uart_Isr
   D:0099H         PUBLIC        SBUF
   D:0098H         PUBLIC        SCON
   D:0088H         PUBLIC        TCON
-  C:1503H         SYMBOL        _?ix1000
+  C:1512H         SYMBOL        _?ix1000
   D:00C7H         PUBLIC        IAP_CONTR
   D:00D0H         PUBLIC        PSW
   -------         PROC          UART_ISR
-  C:13CBH         LINE#         3
-  C:13DAH         LINE#         5
-  C:13DDH         LINE#         6
-  C:13DDH         LINE#         7
-  C:13DFH         LINE#         8
-  C:13E7H         LINE#         9
-  C:13EEH         LINE#         10
-  C:13EEH         LINE#         11
-  C:13F1H         LINE#         12
-  C:1406H         LINE#         13
-  C:1406H         LINE#         14
-  C:1409H         LINE#         15
-  C:140DH         LINE#         16
-  C:1411H         LINE#         17
-  C:1411H         LINE#         18
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:27:40  PAGE 19
+  C:13DAH         LINE#         3
+  C:13E9H         LINE#         5
+  C:13ECH         LINE#         6
+  C:13ECH         LINE#         7
+  C:13EEH         LINE#         8
+  C:13F6H         LINE#         9
+  C:13FDH         LINE#         10
+  C:13FDH         LINE#         11
+  C:1400H         LINE#         12
+  C:1415H         LINE#         13
+  C:1415H         LINE#         14
+  C:1418H         LINE#         15
+  C:141CH         LINE#         16
+  C:1420H         LINE#         17
+  C:1420H         LINE#         18
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:45:41  PAGE 19
 
 
-  C:1413H         LINE#         20
-  C:1413H         LINE#         21
-  C:1417H         LINE#         22
-  C:1417H         LINE#         23
-  C:1417H         LINE#         24
+  C:1422H         LINE#         20
+  C:1422H         LINE#         21
+  C:1426H         LINE#         22
+  C:1426H         LINE#         23
+  C:1426H         LINE#         24
   -------         ENDPROC       UART_ISR
   -------         PROC          DATA_CL
   -------         DO            
@@ -1094,33 +1094,34 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   I:00BAH         SYMBOL        num
   I:00BBH         SYMBOL        i
   -------         ENDDO         
-  C:12E4H         LINE#         26
-  C:12E4H         LINE#         27
-  C:12E4H         LINE#         28
-  C:12E8H         LINE#         29
-  C:12EDH         LINE#         30
-  C:12EDH         LINE#         31
-  C:1309H         LINE#         32
-  C:1309H         LINE#         33
-  C:1312H         LINE#         34
-  C:1316H         LINE#         35
-  C:1321H         LINE#         36
-  C:1321H         LINE#         37
-  C:1330H         LINE#         38
-  C:1330H         LINE#         39
-  C:133CH         LINE#         40
-  C:1341H         LINE#         42
-  C:1341H         LINE#         44
-  C:1341H         LINE#         45
-  C:1345H         LINE#         46
-  C:1348H         LINE#         47
-  C:134BH         LINE#         48
-  C:134EH         LINE#         49
-  C:1351H         LINE#         50
-  C:135CH         LINE#         51
-  C:135CH         LINE#         52
-  C:135FH         LINE#         53
-  C:1361H         LINE#         54
+  C:125CH         LINE#         26
+  C:125CH         LINE#         27
+  C:125CH         LINE#         28
+  C:1260H         LINE#         29
+  C:1268H         LINE#         30
+  C:1268H         LINE#         31
+  C:1284H         LINE#         32
+  C:1284H         LINE#         33
+  C:128DH         LINE#         34
+  C:1291H         LINE#         35
+  C:129CH         LINE#         36
+  C:129CH         LINE#         37
+  C:12ABH         LINE#         38
+  C:12ABH         LINE#         39
+  C:12B7H         LINE#         40
+  C:12BCH         LINE#         41
+  C:12C5H         LINE#         42
+  C:12C7H         LINE#         44
+  C:12C7H         LINE#         45
+  C:12CBH         LINE#         46
+  C:12CEH         LINE#         47
+  C:12D1H         LINE#         48
+  C:12D4H         LINE#         49
+  C:12D7H         LINE#         50
+  C:12E2H         LINE#         51
+  C:12E2H         LINE#         52
+  C:12E5H         LINE#         53
+  C:12E8H         LINE#         54
   -------         ENDPROC       DATA_CL
   -------         PROC          _DATA_QUE
   D:0011H         SYMBOL        i
@@ -1138,10 +1139,10 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   -------         DO            
   D:0014H         SYMBOL        k
   D:0015H         SYMBOL        l
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:45:41  PAGE 20
+
+
   D:0014H         SYMBOL        k
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:27:40  PAGE 20
-
-
   D:0015H         SYMBOL        l
   D:0014H         SYMBOL        j
   -------         ENDDO         
@@ -1198,10 +1199,10 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   C:09BBH         LINE#         99
   C:09CBH         LINE#         100
   C:09CBH         LINE#         101
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:45:41  PAGE 21
+
+
   C:0A00H         LINE#         102
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:27:40  PAGE 21
-
-
   C:0A06H         LINE#         103
   C:0A06H         LINE#         104
   C:0A08H         LINE#         105
@@ -1235,33 +1236,33 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
   C:0ABAH         LINE#         136
   C:0ABAH         LINE#         137
   C:0AD2H         LINE#         138
+  C:0AD6H         LINE#         139
   C:0AD6H         LINE#         140
-  C:0AD6H         LINE#         141
+  C:0AE4H         LINE#         141
   C:0AE4H         LINE#         142
-  C:0AE4H         LINE#         144
-  C:0AE4H         LINE#         145
-  C:0AE9H         LINE#         146
-  C:0AE9H         LINE#         147
-  C:0AF3H         LINE#         148
-  C:0AF3H         LINE#         149
+  C:0AE4H         LINE#         143
+  C:0AE9H         LINE#         144
+  C:0AE9H         LINE#         145
+  C:0AF3H         LINE#         146
+  C:0AF3H         LINE#         147
+  C:0AF6H         LINE#         148
+  C:0AF6H         LINE#         149
   C:0AF6H         LINE#         150
   C:0AF6H         LINE#         151
   C:0AF6H         LINE#         152
   C:0AF6H         LINE#         153
+  C:0AF6H         LINE#         154
   C:0AF6H         LINE#         155
   C:0AF6H         LINE#         156
-  C:0AF6H         LINE#         157
-  C:0AF6H         LINE#         159
-  C:0AF6H         LINE#         160
   -------         ENDPROC       _DATA_QUE
   -------         ENDMOD        DATA
 
   -------         MODULE        ?C?COPY
   C:0BC7H         PUBLIC        ?C?COPY
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:45:41  PAGE 22
+
+
   -------         ENDMOD        ?C?COPY
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/01/2022  15:27:40  PAGE 22
-
-
 
   -------         MODULE        ?C?CLDPTR
   C:0BEDH         PUBLIC        ?C?CLDPTR
@@ -1312,8 +1313,5 @@ SYMBOL TABLE OF MODULE:  .\Objects\STC12C5A16AD (MAIN)
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?DATA_CL?DATA
 
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_DATA_QUE?DATA
-
-Program Size: data=227.5 xdata=0 code=5382
-LINK/LOCATE RUN COMPLETE.  4 WARNING(S),  0 ERROR(S)
+Program Size: data=227.5 xdata=0 code=5397
+LINK/LOCATE RUN COMPLETE.  3 WARNING(S),  0 ERROR(S)
