@@ -56,6 +56,22 @@ void DATA_CL() //接收到的数据进行效验处理
 void DATA_Que(uchar *i) //接收到有效数据，分类并处理
 {
 	uchar idata j[5] = {0xfd, 0x03, 0x90, 0x10, 0xa0};
+	switch (i[0])
+	{
+	  case 0x01:
+	  IapEraseSector(0x2000); //扇区擦除
+		IapEraseSector(0x2200);
+		IapEraseSector(0x2400);
+		IapEraseSector(0x2600);
+		IapEraseSector(0x2800);
+		IapEraseSector(0x2a00);
+		IapEraseSector(0x2c00);
+		IapEraseSector(0x2e00);
+		IapProgramuchar(0x2000, i[1]); //电机数
+		IapProgramuchar(0x2001, i[2]); //扩展口电机/定位选择
+		UART_Send(j, 5);
+		break;
+	}
 	if (i[0] == 0x01) //设置参数
 	{
 		IapEraseSector(0x2000); //扇区擦除
