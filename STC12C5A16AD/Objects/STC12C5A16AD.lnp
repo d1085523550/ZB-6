@@ -1,0 +1,9 @@
+".\Objects\Main.obj",
+".\Objects\EEPROM_Iap.obj",
+".\Objects\HardWare.obj",
+".\Objects\Motor.obj",
+".\Objects\State.obj",
+".\Objects\Automation.obj",
+".\Objects\Data.obj" 
+TO ".\Objects\STC12C5A16AD" 
+PRINT(".\Listings\STC12C5A16AD.m51") RAMSIZE(256) 

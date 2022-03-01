@@ -1,0 +1,189 @@
+C51 COMPILER V9.60.0.0   HARDWARE                                                          03/01/2022 15:27:40 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE HARDWARE
+OBJECT MODULE PLACED IN .\Objects\HardWare.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE HardWare.c OPTIMIZE(8,SPEED) BROWSE INCDIR(..\STC12C5A16AD) DEBUG OBJECT
+                    -EXTEND PRINT(.\Listings\HardWare.lst) TABS(1) OBJECT(.\Objects\HardWare.obj)
+
+line level    source
+
+   1          #include "HardWare.h"
+   2          
+   3          void TIM_Init() // T0定时器
+   4          {
+   5   1          AUXR |= 0x80;      //定时器时钟1T模式
+   6   1          TMOD &= 0xF0;      //设置定时器模式
+   7   1          TMOD |= 0x01;      //设置定时器模式
+   8   1          TL0 = T0Time;      //设置定时初值
+   9   1          TH0 = T0Time >> 8; //设置定时初值
+  10   1          TF0 = 0;           //清除TF0标志
+  11   1          TR0 = 1;           //定时器0开始计时
+  12   1          ET0 = 1;
+  13   1          EA = 1;
+  14   1      }
+  15          
+  16          void UartInit(void) // 115200bps@24.000MHz
+  17          {
+  18   1          PCON |= 0x80; //使能波特率倍速位SMOD
+  19   1          SCON = 0x50;  // 8位数据,可变波特率
+  20   1          AUXR |= 0x04; //独立波特率发生器时钟为Fosc,即1T
+  21   1          BRT = 0xF3;   //设定独立波特率发生器重装值
+  22   1          AUXR |= 0x01; //串口1选择独立波特率发生器为波特率发生器
+  23   1          AUXR |= 0x10; //启动独立波特率发生器
+  24   1      }
+  25          
+  26          void Delay_MN() //模拟串口发送间隔时间 9600 104us
+  27          {
+  28   1          unsigned char i, j;
+  29   1          _nop_();
+  30   1          _nop_();
+  31   1          i = 3;
+  32   1          j = 105;
+  33   1          do
+  34   1          {
+  35   2              while (--j)
+  36   2                  ;
+  37   2          } while (--i);
+  38   1      }
+  39          
+  40          void UART_MN(uchar *dat, uchar n) //模拟串口发送数据
+  41          {
+  42   1          uchar i;
+  43   1          for (i = 0; i < n; i++)
+  44   1          {
+  45   2              bit UartData1, UartData2, UartData3, UartData4, UartData5, UartData6, UartData7, UartData8;
+  46   2              EA = 0;
+  47   2              UartData1 = dat[i] & 0x01;
+  48   2              UartData2 = dat[i] & 0x02;
+  49   2              UartData3 = dat[i] & 0x04;
+  50   2              UartData4 = dat[i] & 0x08;
+  51   2              UartData5 = dat[i] & 0x10;
+  52   2              UartData6 = dat[i] & 0x20;
+  53   2              UartData7 = dat[i] & 0x40;
+  54   2              UartData8 = dat[i] & 0x80;
+C51 COMPILER V9.60.0.0   HARDWARE                                                          03/01/2022 15:27:40 PAGE 2   
+
+  55   2              MN_RTX = 0;
+  56   2              Delay_MN();
+  57   2              MN_RTX = UartData1;
+  58   2              Delay_MN();
+  59   2              MN_RTX = UartData2;
+  60   2              Delay_MN();
+  61   2              MN_RTX = UartData3;
+  62   2              Delay_MN();
+  63   2              MN_RTX = UartData4;
+  64   2              Delay_MN();
+  65   2              MN_RTX = UartData5;
+  66   2              Delay_MN();
+  67   2              MN_RTX = UartData6;
+  68   2              Delay_MN();
+  69   2              MN_RTX = UartData7;
+  70   2              Delay_MN();
+  71   2              MN_RTX = UartData8;
+  72   2              Delay_MN();
+  73   2              MN_RTX = 1;
+  74   2              Delay_MN();
+  75   2              EA = 1;
+  76   2          }
+  77   1      }
+  78          
+  79          void UART_Send(uchar *dat, uchar n) //串口发送
+  80          {
+  81   1          uchar i;
+  82   1          for (i = 0; i < n; i++)
+  83   1          {
+  84   2              SBUF = dat[i];
+  85   2              TI = 0;
+  86   2              while (!TI)
+  87   2                  ;
+  88   2          }
+  89   1      }
+  90          
+  91          void Test_Send(uchar i) //发送测试数据
+  92          {
+  93   1          SBUF = i;
+  94   1          TI = 0;
+  95   1          while (!TI)
+  96   1              ;
+  97   1      }
+  98          
+  99          void KeyTrigger() //按键触发
+ 100          {
+ 101   1          if (XD1 == 0 && XD2 == 1)
+ 102   1          {
+ 103   2              F_ROM_Set = 2;
+ 104   2          }
+ 105   1          else if (XD1 == 1 && XD2 == 0)
+ 106   1          {
+ 107   2              F_ROM_Set = 3;
+ 108   2          }
+ 109   1          else
+ 110   1          {
+ 111   2              F_ROM_Set = 1;
+ 112   2          }
+ 113   1          if (F_ROM_Set != F_ROM_Temp && F_ROM_Temp != 0)
+ 114   1          {
+ 115   2              XD_Run = 1;
+ 116   2              if (XD_Delay >= 200)
+C51 COMPILER V9.60.0.0   HARDWARE                                                          03/01/2022 15:27:40 PAGE 3   
+
+ 117   2              {
+ 118   3                  IAP_CONTR = 0x20; //完全重启单片机
+ 119   3              }
+ 120   2          }
+ 121   1          else
+ 122   1          {
+ 123   2              F_ROM_Temp = F_ROM_Set;
+ 124   2          }
+ 125   1          if (YK == 0)
+ 126   1          {
+ 127   2              YK_Delay = 100;
+ 128   2              while (YK_Delay)
+ 129   2              {
+ 130   3                  if (YK == 1)
+ 131   3                  {
+ 132   4                      YK_Delay = 0;
+ 133   4                  }
+ 134   3                  else if (YK_Delay < 5 && YK == 0)
+ 135   3                  {
+ 136   4                      if (F_Step == P_Step)
+ 137   4                      {
+ 138   5                          WaitTime = 0;
+ 139   5                      }
+ 140   4                      F_Run = 1;
+ 141   4                  }
+ 142   3              }
+ 143   2          }
+ 144   1      
+ 145   1          if ((HW == 0) && (F_Run == 0) && (P_RomFlag == 0))
+ 146   1          {
+ 147   2              HW_Delay = 200;
+ 148   2              while (HW_Delay)
+ 149   2              {
+ 150   3                  if (HW == 1)
+ 151   3                  {
+ 152   4                      HW_Delay = 0;
+ 153   4                  }
+ 154   3                  else if (HW_Delay <= 5 && HW == 0 && F_Run == 0 && P_RomFlag == 0)
+ 155   3                  {
+ 156   4                      F_Run = 1;
+ 157   4                      temp1 = 0;
+ 158   4                  }
+ 159   3              }
+ 160   2          }
+ 161   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    408    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       7
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       8
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,96 @@
+C51 COMPILER V9.60.0.0   EEPROM_IAP                                                        03/01/2022 15:27:40 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE EEPROM_IAP
+OBJECT MODULE PLACED IN .\Objects\EEPROM_Iap.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE EEPROM_Iap.c OPTIMIZE(8,SPEED) BROWSE INCDIR(..\STC12C5A16AD) DEBUG OBJE
+                    -CTEXTEND PRINT(.\Listings\EEPROM_Iap.lst) TABS(1) OBJECT(.\Objects\EEPROM_Iap.obj)
+
+line level    source
+
+   1          #include "EEPROM_Iap.h"
+   2          
+   3          /*----------------------------
+   4          关闭IAP
+   5          ----------------------------*/
+   6          void IapIdle()
+   7          {
+   8   1          IAP_CONTR = 0;    //关闭IAP功能
+   9   1          IAP_CMD = 0;      //清除命令寄存器
+  10   1          IAP_TRIG = 0;     //清除触发寄存器
+  11   1          IAP_ADDRH = 0x80; //将地址设置到非IAP区域
+  12   1          IAP_ADDRL = 0;
+  13   1      }
+  14          
+  15          /*----------------------------
+  16          从IAP/IAP/EEPROM区域读取一字节
+  17          ----------------------------*/
+  18          uchar IapReaduchar(uint addr)
+  19          {
+  20   1          uchar dat; //数据缓冲区
+  21   1      
+  22   1          IAP_CONTR = ENABLE_IAP; //使能IAP
+  23   1          IAP_CMD = CMD_READ;     //设置IAP命令
+  24   1          IAP_ADDRL = addr;       //设置IAP低地址
+  25   1          IAP_ADDRH = addr >> 8;  //设置IAP高地址
+  26   1          EA = 0;
+  27   1          IAP_TRIG = 0x5a; //写触发命令(0x46)
+  28   1          IAP_TRIG = 0xa5; //写触发命令(0xb9)
+  29   1          _nop_();         //等待IAP/IAP/EEPROM操作完成
+  30   1          dat = IAP_DATA;  //读IAP/IAP/EEPROM数据
+  31   1          EA = 1;
+  32   1          IapIdle(); //关闭IAP功能
+  33   1      
+  34   1          return dat; //返回
+  35   1      }
+  36          
+  37          /*----------------------------
+  38          写一字节数据到IAP/IAP/EEPROM区域
+  39          ----------------------------*/
+  40          void IapProgramuchar(uint addr, uchar dat)
+  41          {
+  42   1          IAP_CONTR = ENABLE_IAP; //使能IAP
+  43   1          IAP_CMD = CMD_PROGRAM;  //设置IAP命令
+  44   1          IAP_ADDRL = addr;       //设置IAP低地址
+  45   1          IAP_ADDRH = addr >> 8;  //设置IAP高地址
+  46   1          IAP_DATA = dat;         //写IAP/IAP/EEPROM数据
+  47   1          EA = 0;
+  48   1          IAP_TRIG = 0x5a; //写触发命令(0x46)
+  49   1          IAP_TRIG = 0xa5; //写触发命令(0xb9)
+  50   1          _nop_();         //等待IAP/IAP/EEPROM操作完成
+  51   1          EA = 1;
+  52   1          IapIdle();
+  53   1      }
+  54          
+C51 COMPILER V9.60.0.0   EEPROM_IAP                                                        03/01/2022 15:27:40 PAGE 2   
+
+  55          /*----------------------------
+  56          扇区擦除
+  57          ----------------------------*/
+  58          void IapEraseSector(uint addr)
+  59          {
+  60   1          IAP_CONTR = ENABLE_IAP; //使能IAP
+  61   1          IAP_CMD = CMD_ERASE;    //设置IAP命令
+  62   1          IAP_ADDRL = addr;       //设置IAP低地址
+  63   1          IAP_ADDRH = addr >> 8;  //设置IAP高地址
+  64   1          EA = 0;
+  65   1          IAP_TRIG = 0x5a; //写触发命令(0x46)
+  66   1          IAP_TRIG = 0xa5; //写触发命令(0xb9)
+  67   1          _nop_();         //等待IAP/IAP/EEPROM操作完成
+  68   1          EA = 1;
+  69   1          IapIdle();
+  70   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     89    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

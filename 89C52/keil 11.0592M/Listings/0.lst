@@ -1,0 +1,931 @@
+C51 COMPILER V9.60.0.0   0                                                                 06/03/2021 05:11:41 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE 0
+OBJECT MODULE PLACED IN .\Objects\0.obj
+COMPILER INVOKED BY: d:\Keil_v5\C51\BIN\C51.EXE 0.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\0.lst) 
+                    -TABS(2) OBJECT(.\Objects\0.obj)
+
+line level    source
+
+   1          #include "STC89C5xRC.H"
+   2          #include "EEPROM_ISP.H"
+   3          #define uchar unsigned char
+   4          #define uint unsigned int
+   5          
+   6          //默认为 6倍速
+   7          #define FOSC 11059200L  //晶振频率
+   8          #define BAUD 57600    //波特率
+   9          sbit MN_RTX = P3 ^ 5; //模拟串口 发送口
+  10          sbit HW = P3 ^ 3;   //触发口
+  11          sbit YK = P3 ^ 2;   //遥控触发口
+  12          sbit Power12V = P3 ^ 4; //12V电源 低有效时开通
+  13          sbit XD1 = P3 ^ 6;    //程序选段口1
+  14          sbit XD2 = P3 ^ 7;    //程序选段口2
+  15          
+  16          /////////////////////////////IO脚位/////////////////////////////
+  17          sbit Motor1 = P0 ^ 0; //电机
+  18          sbit Motor2 = P0 ^ 1;
+  19          sbit Motor3 = P0 ^ 2;
+  20          sbit Motor4 = P0 ^ 3;
+  21          sbit Motor5 = P0 ^ 4;
+  22          sbit Motor6 = P0 ^ 5;
+  23          sbit Motor7 = P0 ^ 6;
+  24          sbit Motor8 = P0 ^ 7;
+  25          sbit M_D1 = P2 ^ 7; //电机或者定位 可选
+  26          sbit M_D2 = P2 ^ 6;
+  27          sbit M_D3 = P2 ^ 5;
+  28          sbit M_D4 = P2 ^ 4;
+  29          sbit M_D5 = P2 ^ 3;
+  30          sbit M_D6 = P2 ^ 2;
+  31          sbit M_D7 = P2 ^ 1;
+  32          sbit M_D8 = P2 ^ 0;
+  33          sbit DW1 = P1 ^ 0; //定位
+  34          sbit DW2 = P1 ^ 1;
+  35          sbit DW3 = P1 ^ 2;
+  36          sbit DW4 = P1 ^ 3;
+  37          sbit DW5 = P1 ^ 4;
+  38          sbit DW6 = P1 ^ 5;
+  39          sbit DW7 = P1 ^ 6;
+  40          sbit DW8 = P1 ^ 7;
+  41          
+  42          bit F_Run, P_Run, T_Flag, P_RomFlag, T_BD, T_SendDataFlag, T_YZ;
+  43          uchar F_Motor[16]; //电机状态
+  44          uchar DW_Flag[16]; //定位状态
+  45          uchar DW[17];
+  46          uchar M_D;
+  47          uchar temp1, temp2;
+  48          uchar F_Set, P_Set, F_CXD;
+  49          uchar P_Rom[18], T_ROM_num, T_ROM_D0, T_ROM_D1, T_ROM_D2;
+  50          uchar idata DW_XZ[33];
+  51          uchar idata R_Data[24], R_Num, R_CL;
+  52          uint WaitRes, T_YZ_num;
+  53          uint idata WaitTime;
+  54          
+C51 COMPILER V9.60.0.0   0                                                                 06/03/2021 05:11:41 PAGE 2   
+
+  55          void Delay()
+  56          {
+  57   1        uchar i = 5, j;
+  58   1        while (i--)
+  59   1        {
+  60   2          j = 50;
+  61   2          while (j--)
+  62   2            ;
+  63   2        }
+  64   1      }
+  65          void Delay_MN() //模拟串口发送间隔时间 9600 104us
+  66          {
+  67   1        uchar i;
+  68   1        i = 90;
+  69   1        while (--i)
+  70   1          ;
+  71   1      }
+  72          
+  73          void UART_MN(uchar *dat, uchar n) //模拟串口发送数据
+  74          {
+  75   1        uchar i;
+  76   1        for (i = 0; i < n; i++)
+  77   1        {
+  78   2          bit UartData1, UartData2, UartData3, UartData4, UartData5, UartData6, UartData7, UartData8;
+  79   2          EA = 0;
+  80   2          UartData1 = dat[i] & 0x01;
+  81   2          UartData2 = dat[i] & 0x02;
+  82   2          UartData3 = dat[i] & 0x04;
+  83   2          UartData4 = dat[i] & 0x08;
+  84   2          UartData5 = dat[i] & 0x10;
+  85   2          UartData6 = dat[i] & 0x20;
+  86   2          UartData7 = dat[i] & 0x40;
+  87   2          UartData8 = dat[i] & 0x80;
+  88   2          MN_RTX = 0;
+  89   2          Delay_MN();
+  90   2          MN_RTX = UartData1;
+  91   2          Delay_MN();
+  92   2          MN_RTX = UartData2;
+  93   2          Delay_MN();
+  94   2          MN_RTX = UartData3;
+  95   2          Delay_MN();
+  96   2          MN_RTX = UartData4;
+  97   2          Delay_MN();
+  98   2          MN_RTX = UartData5;
+  99   2          Delay_MN();
+ 100   2          MN_RTX = UartData6;
+ 101   2          Delay_MN();
+ 102   2          MN_RTX = UartData7;
+ 103   2          Delay_MN();
+ 104   2          MN_RTX = UartData8;
+ 105   2          Delay_MN();
+ 106   2          MN_RTX = 1;
+ 107   2          Delay_MN();
+ 108   2          EA = 1;
+ 109   2        }
+ 110   1      }
+ 111          
+ 112          void UART_Send(uchar *dat, uchar n) //串口发送
+ 113          {
+ 114   1        uchar i;
+ 115   1        for (i = 0; i < n; i++)
+ 116   1        {
+C51 COMPILER V9.60.0.0   0                                                                 06/03/2021 05:11:41 PAGE 3   
+
+ 117   2          SBUF = dat[i];
+ 118   2          TI = 0;
+ 119   2          while (!TI)
+ 120   2            ;
+ 121   2        }
+ 122   1      }
+ 123          
+ 124          void Music(uchar num) //播放音乐
+ 125          {
+ 126   1        uchar idata Music_Selection[10] = {0x7e, 0xff, 0x06, 0x12, 0x00, 0x00, 0x01, 0xfe, 0xf7, 0xef}; //选择�
+             -��发 MP3文件夹
+ 127   1        Music_Selection[6] = num;
+ 128   1        Music_Selection[7] = ((0xffff - (Music_Selection[1] + Music_Selection[2] + Music_Selection[3] + Music_Sel
+             -ection[4] + Music_Selection[5] + Music_Selection[6]) + 1) >> 8);
+ 129   1        Music_Selection[8] = ((0xffff - (Music_Selection[1] + Music_Selection[2] + Music_Selection[3] + Music_Sel
+             -ection[4] + Music_Selection[5] + Music_Selection[6]) + 1) & 0xff);
+ 130   1        UART_MN(Music_Selection, 10);
+ 131   1      }
+ 132          
+ 133          void MusicVol()
+ 134          {
+ 135   1        uchar code Music_Vol[10] = {0x7e, 0xff, 0x06, 0x06, 0x00, 0x00, 0x1e, 0xfe, 0xf7, 0xef}; //音量调节
+ 136   1        UART_MN(Music_Vol, 10);
+ 137   1      }
+ 138          
+ 139          uchar *M_ROM(uchar n)
+ 140          {
+ 141   1        uchar idata M_Rom[19], num1, num2;
+ 142   1        if (P_RomFlag)
+ 143   1        {
+ 144   2          for (num1 = 0; num1 < 19; num1++)
+ 145   2          {
+ 146   3            M_Rom[num1] = P_Rom[num1];
+ 147   3          }
+ 148   2        }
+ 149   1        else
+ 150   1        {
+ 151   2          switch (F_CXD)
+ 152   2          {
+ 153   3          case 1:
+ 154   3            for (num1 = 0, num2 = 19; num1 < 19; num1++, num2--)
+ 155   3            {
+ 156   4              M_Rom[num1] = IspReaduchar(19 * n - num2 + 0x2200);
+ 157   4            }
+ 158   3            break;
+ 159   3          case 2:
+ 160   3            for (num1 = 0, num2 = 19; num1 < 19; num1++, num2--)
+ 161   3            {
+ 162   4              M_Rom[num1] = IspReaduchar(19 * n - num2 + 0x2600);
+ 163   4            }
+ 164   3            break;
+ 165   3          case 3:
+ 166   3            for (num1 = 0, num2 = 19; num1 < 19; num1++, num2--)
+ 167   3            {
+ 168   4              M_Rom[num1] = IspReaduchar(19 * n - num2 + 0x2b00);
+ 169   4            }
+ 170   3            break;
+ 171   3          }
+ 172   2        }
+ 173   1        return M_Rom;
+ 174   1      }
+ 175          
+C51 COMPILER V9.60.0.0   0                                                                 06/03/2021 05:11:41 PAGE 4   
+
+ 176          void DATA_Int() //需要初始的值
+ 177          {
+ 178   1        M_D1 = 0;
+ 179   1        M_D2 = 0;
+ 180   1        M_D3 = 0;
+ 181   1        M_D4 = 0;
+ 182   1        M_D5 = 0;
+ 183   1        M_D6 = 0;
+ 184   1        M_D7 = 0;
+ 185   1        M_D8 = 0;
+ 186   1        Power12V = 0;
+ 187   1        P_Run = 1;
+ 188   1        F_Run = 0;
+ 189   1        P_Set = 1;
+ 190   1        R_CL = 0;
+ 191   1        T_Flag = 0;
+ 192   1        P_RomFlag = 0;
+ 193   1        T_BD = 0;
+ 194   1        T_YZ = 0;
+ 195   1        T_YZ_num = 1;
+ 196   1        T_SendDataFlag = 0;
+ 197   1        R_Num = 0;
+ 198   1        M_D = IspReaduchar(0x2001);
+ 199   1        (M_D & 0x80 / 0x80) ? (M_D1 = 0) : (M_D1 = 1);
+ 200   1        (M_D & 0x40 / 0x40) ? (M_D2 = 0) : (M_D2 = 1);
+ 201   1        (M_D & 0x20 / 0x20) ? (M_D3 = 0) : (M_D3 = 1);
+ 202   1        (M_D & 0x10 / 0x10) ? (M_D4 = 0) : (M_D4 = 1);
+ 203   1        (M_D & 0x08 / 0x08) ? (M_D5 = 0) : (M_D5 = 1);
+ 204   1        (M_D & 0x04 / 0x04) ? (M_D6 = 0) : (M_D6 = 1);
+ 205   1        (M_D & 0x02 / 0x02) ? (M_D7 = 0) : (M_D7 = 1);
+ 206   1        (M_D & 0x01 / 0x01) ? (M_D8 = 0) : (M_D8 = 1);
+ 207   1        DW_XZ[0] = IspReaduchar(0x2010);
+ 208   1        DW_XZ[1] = IspReaduchar(0x2020);
+ 209   1        DW_XZ[2] = IspReaduchar(0x2011);
+ 210   1        DW_XZ[3] = IspReaduchar(0x2021);
+ 211   1        DW_XZ[4] = IspReaduchar(0x2012);
+ 212   1        DW_XZ[5] = IspReaduchar(0x2022);
+ 213   1        DW_XZ[6] = IspReaduchar(0x2013);
+ 214   1        DW_XZ[7] = IspReaduchar(0x2023);
+ 215   1        DW_XZ[8] = IspReaduchar(0x2014);
+ 216   1        DW_XZ[9] = IspReaduchar(0x2024);
+ 217   1        DW_XZ[10] = IspReaduchar(0x2015);
+ 218   1        DW_XZ[11] = IspReaduchar(0x2025);
+ 219   1        DW_XZ[12] = IspReaduchar(0x2016);
+ 220   1        DW_XZ[13] = IspReaduchar(0x2026);
+ 221   1        DW_XZ[14] = IspReaduchar(0x2017);
+ 222   1        DW_XZ[15] = IspReaduchar(0x2027);
+ 223   1        DW_XZ[16] = IspReaduchar(0x2018);
+ 224   1        DW_XZ[17] = IspReaduchar(0x2028);
+ 225   1        DW_XZ[18] = IspReaduchar(0x2019);
+ 226   1        DW_XZ[19] = IspReaduchar(0x2029);
+ 227   1        DW_XZ[20] = IspReaduchar(0x201a);
+ 228   1        DW_XZ[21] = IspReaduchar(0x202a);
+ 229   1        DW_XZ[22] = IspReaduchar(0x201b);
+ 230   1        DW_XZ[23] = IspReaduchar(0x202b);
+ 231   1        DW_XZ[24] = IspReaduchar(0x201c);
+ 232   1        DW_XZ[25] = IspReaduchar(0x202c);
+ 233   1        DW_XZ[26] = IspReaduchar(0x201d);
+ 234   1        DW_XZ[27] = IspReaduchar(0x202d);
+ 235   1        DW_XZ[28] = IspReaduchar(0x201e);
+ 236   1        DW_XZ[29] = IspReaduchar(0x202e);
+ 237   1        DW_XZ[30] = IspReaduchar(0x201f);
+C51 COMPILER V9.60.0.0   0                                                                 06/03/2021 05:11:41 PAGE 5   
+
+ 238   1        DW_XZ[31] = IspReaduchar(0x202f);
+ 239   1      }
+ 240          
+ 241          void Send_MotorDW_Flag() //返回电机及定位的状态
+ 242          {
+ 243   1        uchar i[7];
+ 244   1        i[0] = 0xfd;
+ 245   1        i[1] = 0x05;
+ 246   1        i[2] = 0x70;
+ 247   1        i[3] = (Motor1 * 128) | (Motor2 * 64) | (Motor3 * 32) | (Motor4 * 16) | (Motor5 * 8) | (Motor6 * 4) | (Mo
+             -tor7 * 2) | (Motor8 * 1);
+ 248   1        i[4] = (DW1 * 0x80) | (DW2 * 0x40) | (DW3 * 0x20) | (DW4 * 0x10) | (DW5 * 0x08) | (DW6 * 0x04) | (DW7 * 0
+             -x02) | (DW8 * 0x01);
+ 249   1        i[5] = (M_D1 * 0x80) | (M_D2 * 0x40) | (M_D3 * 0x20) | (M_D4 * 0x10) | (M_D5 * 0x08) | (M_D6 * 0x04) | (M
+             -_D7 * 0x02) | (M_D8 * 0x01);
+ 250   1        i[6] = i[0] + i[1] + i[2] + i[3] + i[4] + i[5];
+ 251   1        UART_Send(i, 7);
+ 252   1      }
+ 253          
+ 254          void Send_Data(uchar n) //数据上传
+ 255          {
+ 256   1        uchar idata i[24];
+ 257   1        if (n == 1)
+ 258   1        {
+ 259   2          i[0] = 0xfd;
+ 260   2          i[1] = 3;
+ 261   2          i[2] = 0x50;
+ 262   2          i[3] = IspReaduchar(0x2001);
+ 263   2          i[4] = i[0] + i[1] + i[2] + i[3];
+ 264   2          UART_Send(i, 5);
+ 265   2          T_YZ = 0;
+ 266   2        }
+ 267   1        else if (n == 2)
+ 268   1        {
+ 269   2          i[0] = 0xfd;
+ 270   2          i[1] = 3;
+ 271   2          i[2] = 0x64;
+ 272   2          T_ROM_D0 = IspReaduchar(0x2030);
+ 273   2          if (T_ROM_D0 == 0 || T_ROM_D0 > 68)
+ 274   2          {
+ 275   3            T_ROM_D0 = 1;
+ 276   3            i[3] = 1;
+ 277   3          }
+ 278   2          else
+ 279   2          {
+ 280   3            i[3] = T_ROM_D0;
+ 281   3          }
+ 282   2          T_ROM_D1 = IspReaduchar(0x2031);
+ 283   2          if (T_ROM_D1 == 0 || T_ROM_D1 > 68)
+ 284   2          {
+ 285   3            T_ROM_D1 = 1;
+ 286   3            i[4] = 1;
+ 287   3          }
+ 288   2          else
+ 289   2          {
+ 290   3            i[4] = T_ROM_D1;
+ 291   3          }
+ 292   2          T_ROM_D2 = IspReaduchar(0x2032);
+ 293   2          if (T_ROM_D2 == 0 || T_ROM_D2 > 68)
+ 294   2          {
+ 295   3            T_ROM_D2 = 1;
+ 296   3            i[5] = 1;
+C51 COMPILER V9.60.0.0   0                                                                 06/03/2021 05:11:41 PAGE 6   
+
+ 297   3          }
+ 298   2          else
+ 299   2          {
+ 300   3            i[5] = T_ROM_D2;
+ 301   3          }
+ 302   2          i[6] = i[0] + i[1] + i[2] + i[3] + i[4] + i[5];
+ 303   2          UART_Send(i, 7);
+ 304   2          T_YZ = 0;
+ 305   2        }
+ 306   1        else if (n < 19)
+ 307   1        {
+ 308   2          i[0] = 0xfd;
+ 309   2          i[1] = 0x04;
+ 310   2          i[2] = 0x51 + n - 3;
+ 311   2          i[3] = IspReaduchar(0x2010 + n - 3);
+ 312   2          i[4] = IspReaduchar(0x2020 + n - 3);
+ 313   2          i[5] = i[0] + i[1] + i[2] + i[3] + i[4];
+ 314   2          UART_Send(i, 6);
+ 315   2          Delay();
+ 316   2          T_YZ = 0;
+ 317   2        }
+ 318   1        else if (n < 19 + T_ROM_D0)
+ 319   1        {
+ 320   2          uchar l, m;
+ 321   2          i[0] = 0xfd;
+ 322   2          i[1] = 22;
+ 323   2          i[2] = 0x61;
+ 324   2          i[3] = n - 18;
+ 325   2          for (l = 0, m = 19; l < 19; l++, m--)
+ 326   2          {
+ 327   3            i[l + 4] = IspReaduchar(i[3] * 19 - m + 0x2100);
+ 328   3          }
+ 329   2          if (i[4] > 4)
+ 330   2          {
+ 331   3            for (l = 0; l < 19; l++)
+ 332   3            {
+ 333   4              i[l + 4] = 0;
+ 334   4            }
+ 335   3          }
+ 336   2          i[23] = i[0] + i[1] + i[2] + i[3] + i[4] + i[5] + i[6] + i[7] + i[8] + i[9] + i[10] + i[11] + i[12] + i[
+             -13] + i[14] + i[15] + i[16] + i[17] + i[18] + i[19] + i[20] + i[21] + i[22];
+ 337   2          UART_Send(i, 24);
+ 338   2          T_YZ = 0;
+ 339   2        }
+ 340   1        else if (n < 19 + T_ROM_D0 + T_ROM_D1)
+ 341   1        {
+ 342   2          uchar l, m;
+ 343   2          i[0] = 0xfd;
+ 344   2          i[1] = 22;
+ 345   2          i[2] = 0x61;
+ 346   2          i[3] = n - 18 - T_ROM_D0;
+ 347   2          for (l = 0, m = 19; l < 19; l++, m--)
+ 348   2          {
+ 349   3            i[l + 4] = IspReaduchar(i[3] * 19 - m + 0x2100);
+ 350   3          }
+ 351   2          if (i[4] > 4)
+ 352   2          {
+ 353   3            for (l = 0; l < 19; l++)
+ 354   3            {
+ 355   4              i[l + 4] = 0;
+ 356   4            }
+ 357   3          }
+C51 COMPILER V9.60.0.0   0                                                                 06/03/2021 05:11:41 PAGE 7   
+
+ 358   2          i[23] = i[0] + i[1] + i[2] + i[3] + i[4] + i[5] + i[6] + i[7] + i[8] + i[9] + i[10] + i[11] + i[12] + i[
+             -13] + i[14] + i[15] + i[16] + i[17] + i[18] + i[19] + i[20] + i[21] + i[22];
+ 359   2          UART_Send(i, 24);
+ 360   2          T_YZ = 0;
+ 361   2        }
+ 362   1        else if (n < 19 + T_ROM_D0 + T_ROM_D1 + T_ROM_D2)
+ 363   1        {
+ 364   2          uchar l, m;
+ 365   2          i[0] = 0xfd;
+ 366   2          i[1] = 22;
+ 367   2          i[2] = 0x61;
+ 368   2          i[3] = n - 18 - T_ROM_D0 - T_ROM_D1;
+ 369   2          for (l = 0, m = 19; l < 19; l++, m--)
+ 370   2          {
+ 371   3            i[l + 4] = IspReaduchar(i[3] * 19 - m + 0x2100);
+ 372   3          }
+ 373   2          if (i[4] > 4)
+ 374   2          {
+ 375   3            for (l = 0; l < 19; l++)
+ 376   3            {
+ 377   4              i[l + 4] = 0;
+ 378   4            }
+ 379   3          }
+ 380   2          i[23] = i[0] + i[1] + i[2] + i[3] + i[4] + i[5] + i[6] + i[7] + i[8] + i[9] + i[10] + i[11] + i[12] + i[
+             -13] + i[14] + i[15] + i[16] + i[17] + i[18] + i[19] + i[20] + i[21] + i[22];
+ 381   2          UART_Send(i, 24);
+ 382   2          T_YZ = 0;
+ 383   2        }
+ 384   1        else if (n == 19 + T_ROM_D0 + T_ROM_D1 + T_ROM_D2)
+ 385   1        {
+ 386   2          i[0] = 0xfd;
+ 387   2          i[1] = 3;
+ 388   2          i[2] = 0x65;
+ 389   2          i[3] = 0x10;
+ 390   2          i[4] = 0x75;
+ 391   2          UART_Send(i, 5);
+ 392   2          T_YZ = 0;
+ 393   2          T_YZ_num = 1;
+ 394   2          T_SendDataFlag = 0;
+ 395   2          TR0 = 1;
+ 396   2          TR1 = 1;
+ 397   2        }
+ 398   1      }
+ 399          
+ 400          void DATA_Que(uchar *i) //接收到有效数据，分类并处理
+ 401          {
+ 402   1        uchar idata j[5] = {0xfd, 0x03, 0x90, 0x10, 0xa0};
+ 403   1        if (i[0] == 0x01) //设置参数
+ 404   1        {
+ 405   2          IspEraseSector(0x2000); //扇区擦除
+ 406   2          IspEraseSector(0x2200);
+ 407   2          IspEraseSector(0x2400);
+ 408   2          IspEraseSector(0x2600);
+ 409   2          IspEraseSector(0x2800);
+ 410   2          IspEraseSector(0x2a00);
+ 411   2          IspEraseSector(0x2c00);
+ 412   2          IspEraseSector(0x2e00);
+ 413   2          IspProgramuchar(0x2000, i[1]); //电机数
+ 414   2          IspProgramuchar(0x2001, i[2]); //扩展口电机/定位选择
+ 415   2          UART_Send(j, 5);
+ 416   2        }
+ 417   1        else if (i[0] >= 0x10 && i[0] <= 0x1f) //设置定位参数
+C51 COMPILER V9.60.0.0   0                                                                 06/03/2021 05:11:41 PAGE 8   
+
+ 418   1        {
+ 419   2          i[0] = i[0] - 0x10;
+ 420   2          IspProgramuchar(0x2010 + i[0], i[1]); //定位1 端口选择 2010-201F
+ 421   2          IspProgramuchar(0x2020 + i[0], i[2]); //定位2 端口选择 2020-202F
+ 422   2          UART_Send(j, 5);
+ 423   2        }
+ 424   1        else if (i[0] == 0x20) //程序段总数
+ 425   1        {
+ 426   2          IspProgramuchar(0x2030, i[1]); //程序0段总段数
+ 427   2          IspProgramuchar(0x2031, i[2]); //程序1段总段数
+ 428   2          IspProgramuchar(0x2032, i[3]); //程序2段总段数
+ 429   2          UART_Send(j, 5);
+ 430   2        }
+ 431   1        else if (i[0] == 0x21) //程序0段写入
+ 432   1        {
+ 433   2          uchar k, l;
+ 434   2          for (k = 0, l = 19; k < 19; k++, l--)
+ 435   2          {
+ 436   3            IspProgramuchar((i[1] + 1) * 19 - l + 0x2100, i[k + 2]); //循环写入数据 2100-25F9里
+ 437   3          }
+ 438   2          UART_Send(j, 5);
+ 439   2        }
+ 440   1        else if (i[0] == 0x22) //程序1段写入
+ 441   1        {
+ 442   2          uchar k, l;
+ 443   2          for (k = 0, l = 19; k < 19; k++, l--)
+ 444   2          {
+ 445   3            IspProgramuchar((i[1] + 1) * 19 - l + 0x2600, i[k + 2]); //循环写入数据 2600-2AF9里
+ 446   3          }
+ 447   2          UART_Send(j, 5);
+ 448   2        }
+ 449   1        else if (i[0] == 0x23) //程序2段写入
+ 450   1        {
+ 451   2          uchar k, l;
+ 452   2          for (k = 0, l = 19; k < 19; k++, l--)
+ 453   2          {
+ 454   3            IspProgramuchar((i[1] + 1) * 19 - l + 0x2b00, i[k + 2]); //循环写入数据 2b00-2FF9里
+ 455   3          }
+ 456   2          UART_Send(j, 5);
+ 457   2        }
+ 458   1        else if (i[0] == 0x30) //电机定位状态返回
+ 459   1        {
+ 460   2          if (i[1] == 1)
+ 461   2          {
+ 462   3            T_Flag = 1;
+ 463   3          }
+ 464   2          else
+ 465   2          {
+ 466   3            T_Flag = 0;
+ 467   3          }
+ 468   2        }
+ 469   1        else if (i[0] == 0x31) //强制停止
+ 470   1        {
+ 471   2          if (i[1] == 1)
+ 472   2          {
+ 473   3            ISP_CONTR = 0X20;
+ 474   3          }
+ 475   2        }
+ 476   1        else if (i[0] == 0x32 || i[0] == 0x35) //单段程序启动
+ 477   1        {
+ 478   2          uchar j;
+ 479   2          for (j = 0; j < 18; j++)
+C51 COMPILER V9.60.0.0   0                                                                 06/03/2021 05:11:41 PAGE 9   
+
+ 480   2          {
+ 481   3            P_Rom[j] = i[j + 1];
+ 482   3          }
+ 483   2          P_Run = 1;
+ 484   2          F_Run = 1;
+ 485   2          F_Set = 1;
+ 486   2          P_Set = 1;
+ 487   2          P_RomFlag = 1;
+ 488   2        }
+ 489   1        else if (i[0] == 0x33) //程序位置返回
+ 490   1        {
+ 491   2          if (i[1] == 1)
+ 492   2          {
+ 493   3            T_BD = 1;
+ 494   3          }
+ 495   2          else
+ 496   2          {
+ 497   3            T_BD = 0;
+ 498   3          }
+ 499   2        }
+ 500   1        else if (i[0] == 0x65) //下载完成 并重启
+ 501   1        {
+ 502   2          if (i[1] == 0x10)
+ 503   2          {
+ 504   3            ISP_CONTR = 0X20; //重启单片机
+ 505   3          }
+ 506   2        }
+ 507   1        else if (i[0] == 0xa0) //上传标志
+ 508   1        {
+ 509   2          if (i[1] == 1 && T_SendDataFlag == 0)
+ 510   2          {
+ 511   3            T_YZ = 1;
+ 512   3            T_SendDataFlag = 1;
+ 513   3            TR0 = 0;
+ 514   3            TR1 = 0;
+ 515   3          }
+ 516   2        }
+ 517   1        else if (i[0] == 0x90) //数据是否正确
+ 518   1        {
+ 519   2          if (i[1] == 0x10 && T_SendDataFlag == 1)
+ 520   2          {
+ 521   3            T_YZ = 1;
+ 522   3            T_YZ_num++;
+ 523   3          }
+ 524   2          else if (i[1] == 0xff && T_SendDataFlag == 1)
+ 525   2          {
+ 526   3            T_YZ = 1;
+ 527   3          }
+ 528   2        }
+ 529   1      }
+ 530          
+ 531          void DATA_CL() //接收到的数据进行效验处理
+ 532          {
+ 533   1        uchar idata SUM = 0xFD, num, i[21];
+ 534   1        while (R_CL)
+ 535   1        {
+ 536   2          for (num = 1; num < R_Data[1] + 1; num++)
+ 537   2          {
+ 538   3            SUM = SUM + R_Data[num];
+ 539   3          }
+ 540   2          if (SUM == R_Data[num])
+ 541   2          {
+C51 COMPILER V9.60.0.0   0                                                                 06/03/2021 05:11:41 PAGE 10  
+
+ 542   3            for (num = 0; num < R_Data[1] - 1; num++)
+ 543   3            {
+ 544   4              i[num] = R_Data[num + 2];
+ 545   4            }
+ 546   3            DATA_Que(i);
+ 547   3          }
+ 548   2          else
+ 549   2          {
+ 550   3            i[0] = 0xfd;
+ 551   3            i[1] = 0x03;
+ 552   3            i[2] = 0x90;
+ 553   3            i[3] = 0xff;
+ 554   3            i[4] = 0xa0;
+ 555   3            UART_Send(i, 5);
+ 556   3          }
+ 557   2          R_CL--;
+ 558   2        }
+ 559   1      }
+ 560          
+ 561          void UART_Int()
+ 562          {
+ 563   1        SCON = 0x50;
+ 564   1        TH2 = RCAP2H = (65536 - (FOSC / 16 / BAUD)) / 256;
+ 565   1        TL2 = RCAP2L = (65536 - (FOSC / 16 / BAUD)) % 256;
+ 566   1        T2CON = 0x34; //T2 Run
+ 567   1        ES = 1;
+ 568   1      }
+ 569          
+ 570          void TIM_Int()
+ 571          {
+ 572   1        TMOD = 0x11; //T1,T2为16位模式 10MS
+ 573   1        TH0 = (65536 - FOSC / 6 / 100) / 256;
+ 574   1        TL0 = (65536 - FOSC / 6 / 100) % 256;
+ 575   1        TH1 = (65536 - FOSC / 6 / 100) / 256;
+ 576   1        TL1 = (65536 - FOSC / 6 / 100) % 256;
+ 577   1        TF0 = 0;
+ 578   1        TF1 = 0;
+ 579   1        ET0 = 1;
+ 580   1        ET1 = 1;
+ 581   1        TR0 = 1;
+ 582   1        TR1 = 1;
+ 583   1        EA = 1;
+ 584   1      }
+ 585          
+ 586          void main()
+ 587          {
+ 588   1        WDT_CONTR=0x37;
+ 589   1        TIM_Int();
+ 590   1        UART_Int();
+ 591   1        MusicVol();
+ 592   1        DATA_Int();
+ 593   1        while (1)
+ 594   1        {
+ 595   2          if ((XD1 == 1) || (XD2 == 1))
+ 596   2          {
+ 597   3            if ((XD1 == 0) && (XD2 == 1))
+ 598   3            {
+ 599   4              F_CXD = 2;
+ 600   4              F_Set = IspReaduchar(0x2031);
+ 601   4            }
+ 602   3            else if ((XD1 == 1) && (XD2 == 0))
+ 603   3            {
+C51 COMPILER V9.60.0.0   0                                                                 06/03/2021 05:11:41 PAGE 11  
+
+ 604   4              F_CXD = 3;
+ 605   4              F_Set = IspReaduchar(0x2032);
+ 606   4            }
+ 607   3            else
+ 608   3            {
+ 609   4              F_CXD = 1;
+ 610   4              F_Set = IspReaduchar(0x2030);
+ 611   4            }
+ 612   3          }
+ 613   2          else
+ 614   2          {
+ 615   3            F_CXD = 1;
+ 616   3            F_Set = IspReaduchar(0x2030);
+ 617   3          }
+ 618   2          if (YK == 0)
+ 619   2          {
+ 620   3            WaitTime = 0;
+ 621   3            F_Run=1;
+ 622   3          }
+ 623   2          if (((HW == 0) || (YK == 0)) && (F_Run == 0))
+ 624   2          {
+ 625   3            F_Run = 1;
+ 626   3            P_RomFlag = 0;
+ 627   3          }
+ 628   2          if (T_SendDataFlag == 1 && T_YZ == 1)
+ 629   2          {
+ 630   3            Send_Data(T_YZ_num);
+ 631   3          }
+ 632   2          if (T_Flag)
+ 633   2          {
+ 634   3            Send_MotorDW_Flag();
+ 635   3            Delay();
+ 636   3          }
+ 637   2          DATA_CL();
+ 638   2        }
+ 639   1      }
+ 640          
+ 641          void T0_Isr() interrupt 1
+ 642          {
+ 643   1        TH0 = (65536 - FOSC / 6 / 100) / 256;
+ 644   1        TL0 = (65536 - FOSC / 6 / 100) % 256;
+ 645   1        TF0 = 0;
+ 646   1        WDT_CONTR=0x37;
+ 647   1        F_Motor[0] ? (Motor1 = 1) : (Motor1 = 0); //电机控制
+ 648   1        F_Motor[1] ? (Motor2 = 1) : (Motor2 = 0);
+ 649   1        F_Motor[2] ? (Motor3 = 1) : (Motor3 = 0);
+ 650   1        F_Motor[3] ? (Motor4 = 1) : (Motor4 = 0);
+ 651   1        F_Motor[4] ? (Motor5 = 1) : (Motor5 = 0);
+ 652   1        F_Motor[5] ? (Motor6 = 1) : (Motor6 = 0);
+ 653   1        F_Motor[6] ? (Motor7 = 1) : (Motor7 = 0);
+ 654   1        F_Motor[7] ? (Motor8 = 1) : (Motor8 = 0);
+ 655   1        if ((M_D & 0x80) / 0x80 == 1)
+ 656   1        {
+ 657   2          F_Motor[8] ? (M_D1 = 1) : (M_D1 = 0);
+ 658   2        }
+ 659   1        if ((M_D & 0x40) / 0x40 == 1)
+ 660   1        {
+ 661   2          F_Motor[9] ? (M_D2 = 1) : (M_D2 = 0);
+ 662   2        }
+ 663   1        if ((M_D & 0x20) / 0x20 == 1)
+ 664   1        {
+ 665   2          F_Motor[10] ? (M_D3 = 1) : (M_D3 = 0);
+C51 COMPILER V9.60.0.0   0                                                                 06/03/2021 05:11:41 PAGE 12  
+
+ 666   2        }
+ 667   1        if ((M_D & 0x10) / 0x10 == 1)
+ 668   1        {
+ 669   2          F_Motor[11] ? (M_D4 = 1) : (M_D4 = 0);
+ 670   2        }
+ 671   1        if ((M_D & 0x08) / 0x08 == 1)
+ 672   1        {
+ 673   2          F_Motor[12] ? (M_D5 = 1) : (M_D5 = 0);
+ 674   2        }
+ 675   1        if ((M_D & 0x04) / 0x04 == 1)
+ 676   1        {
+ 677   2          F_Motor[13] ? (M_D6 = 1) : (M_D6 = 0);
+ 678   2        }
+ 679   1        if ((M_D & 0x02) / 0x02 == 1)
+ 680   1        {
+ 681   2          F_Motor[14] ? (M_D7 = 1) : (M_D7 = 0);
+ 682   2        }
+ 683   1        if ((M_D & 0x01) / 0x01 == 1)
+ 684   1        {
+ 685   2          F_Motor[15] ? (M_D8 = 1) : (M_D8 = 0);
+ 686   2        }
+ 687   1        DW[1] = DW1; //定位反馈
+ 688   1        DW[2] = DW2;
+ 689   1        DW[3] = DW3;
+ 690   1        DW[4] = DW4;
+ 691   1        DW[5] = DW5;
+ 692   1        DW[6] = DW6;
+ 693   1        DW[7] = DW7;
+ 694   1        DW[8] = DW8;
+ 695   1        DW[9] = M_D1;
+ 696   1        DW[10] = M_D2;
+ 697   1        DW[11] = M_D3;
+ 698   1        DW[12] = M_D4;
+ 699   1        DW[13] = M_D5;
+ 700   1        DW[14] = M_D6;
+ 701   1        DW[15] = M_D7;
+ 702   1        DW[16] = M_D8;
+ 703   1        if (((DW_Flag[0] == 1) && (DW[DW_XZ[0]] == 0)) || ((DW_Flag[0] == 2) && (DW[DW_XZ[1]] == 0))) //定位监
+             -测
+ 704   1        {
+ 705   2          DW_Flag[0] = 0;
+ 706   2          F_Motor[0] = 0;
+ 707   2        }
+ 708   1        if (((DW_Flag[1] == 1) && (DW[DW_XZ[2]] == 0)) || ((DW_Flag[1] == 2) && (DW[DW_XZ[3]] == 0)))
+ 709   1        {
+ 710   2          DW_Flag[1] = 0;
+ 711   2          F_Motor[1] = 0;
+ 712   2        }
+ 713   1        if (((DW_Flag[2] == 1) && (DW[DW_XZ[4]] == 0)) || ((DW_Flag[2] == 2) && (DW[DW_XZ[5]] == 0)))
+ 714   1        {
+ 715   2          DW_Flag[2] = 0;
+ 716   2          F_Motor[2] = 0;
+ 717   2        }
+ 718   1        if (((DW_Flag[3] == 1) && (DW[DW_XZ[6]] == 0)) || ((DW_Flag[3] == 2) && (DW[DW_XZ[7]] == 0)))
+ 719   1        {
+ 720   2          DW_Flag[3] = 0;
+ 721   2          F_Motor[3] = 0;
+ 722   2        }
+ 723   1        if (((DW_Flag[4] == 1) && (DW[DW_XZ[8]] == 0)) || ((DW_Flag[4] == 2) && (DW[DW_XZ[9]] == 0)))
+ 724   1        {
+ 725   2          DW_Flag[4] = 0;
+ 726   2          F_Motor[4] = 0;
+C51 COMPILER V9.60.0.0   0                                                                 06/03/2021 05:11:41 PAGE 13  
+
+ 727   2        }
+ 728   1        if (((DW_Flag[5] == 1) && (DW[DW_XZ[10]] == 0)) || ((DW_Flag[5] == 2) && (DW[DW_XZ[11]] == 0)))
+ 729   1        {
+ 730   2          DW_Flag[5] = 0;
+ 731   2          F_Motor[5] = 0;
+ 732   2        }
+ 733   1        if (((DW_Flag[6] == 1) && (DW[DW_XZ[12]] == 0)) || ((DW_Flag[6] == 2) && (DW[DW_XZ[13]] == 0)))
+ 734   1        {
+ 735   2          DW_Flag[6] = 0;
+ 736   2          F_Motor[6] = 0;
+ 737   2        }
+ 738   1        if (((DW_Flag[7] == 1) && (DW[DW_XZ[14]] == 0)) || ((DW_Flag[7] == 2) && (DW[DW_XZ[15]] == 0)))
+ 739   1        {
+ 740   2          DW_Flag[7] = 0;
+ 741   2          F_Motor[7] = 0;
+ 742   2        }
+ 743   1        if (((DW_Flag[8] == 1) && (DW[DW_XZ[16]] == 0)) || ((DW_Flag[8] == 2) && (DW[DW_XZ[17]] == 0)))
+ 744   1        {
+ 745   2          DW_Flag[8] = 0;
+ 746   2          F_Motor[8] = 0;
+ 747   2        }
+ 748   1        if (((DW_Flag[9] == 1) && (DW[DW_XZ[18]] == 0)) || ((DW_Flag[9] == 2) && (DW[DW_XZ[19]] == 0)))
+ 749   1        {
+ 750   2          DW_Flag[9] = 0;
+ 751   2          F_Motor[9] = 0;
+ 752   2        }
+ 753   1        if (((DW_Flag[10] == 1) && (DW[DW_XZ[20]] == 0)) || ((DW_Flag[10] == 2) && (DW[DW_XZ[21]] == 0)))
+ 754   1        {
+ 755   2          DW_Flag[10] = 0;
+ 756   2          F_Motor[10] = 0;
+ 757   2        }
+ 758   1        if (((DW_Flag[11] == 1) && (DW[DW_XZ[22]] == 0)) || ((DW_Flag[11] == 2) && (DW[DW_XZ[23]] == 0)))
+ 759   1        {
+ 760   2          DW_Flag[11] = 0;
+ 761   2          F_Motor[11] = 0;
+ 762   2        }
+ 763   1        if (((DW_Flag[12] == 1) && (DW[DW_XZ[24]] == 0)) || ((DW_Flag[12] == 2) && (DW[DW_XZ[25]] == 0)))
+ 764   1        {
+ 765   2          DW_Flag[12] = 0;
+ 766   2          F_Motor[12] = 0;
+ 767   2        }
+ 768   1        if (((DW_Flag[13] == 1) && (DW[DW_XZ[26]] == 0)) || ((DW_Flag[13] == 2) && (DW[DW_XZ[27]] == 0)))
+ 769   1        {
+ 770   2          DW_Flag[13] = 0;
+ 771   2          F_Motor[13] = 0;
+ 772   2        }
+ 773   1        if (((DW_Flag[14] == 1) && (DW[DW_XZ[28]] == 0)) || ((DW_Flag[14] == 2) && (DW[DW_XZ[29]] == 0)))
+ 774   1        {
+ 775   2          DW_Flag[14] = 0;
+ 776   2          F_Motor[14] = 0;
+ 777   2        }
+ 778   1        if (((DW_Flag[15] == 1) && (DW[DW_XZ[30]] == 0)) || ((DW_Flag[15] == 2) && (DW[DW_XZ[31]] == 0)))
+ 779   1        {
+ 780   2          DW_Flag[15] = 0;
+ 781   2          F_Motor[15] = 0;
+ 782   2        }
+ 783   1      }
+ 784          
+ 785          void T1_Isr() interrupt 3
+ 786          {
+ 787   1        TH1 = (65536 - FOSC / 6 / 100) / 256;
+ 788   1        TL1 = (65536 - FOSC / 6 / 100) % 256;
+C51 COMPILER V9.60.0.0   0                                                                 06/03/2021 05:11:41 PAGE 14  
+
+ 789   1        TF1 = 0;
+ 790   1        if (F_Run)
+ 791   1        {
+ 792   2          temp1++;
+ 793   2          if (P_Run)
+ 794   2          {
+ 795   3            uchar *M_Rom, num1;
+ 796   3            M_Rom = M_ROM(P_Set);
+ 797   3            for (num1 = 0; num1 < 16; num1++)
+ 798   3            {
+ 799   4              if (*(M_Rom + num1) == 0)
+ 800   4              {
+ 801   5                F_Motor[num1] = 0;
+ 802   5              }
+ 803   4              else if (*(M_Rom + num1) == 1)
+ 804   4              {
+ 805   5                F_Motor[num1] = 1;
+ 806   5              }
+ 807   4              else if (*(M_Rom + num1) == 2)
+ 808   4              {
+ 809   5                DW_Flag[num1] = 1;
+ 810   5              }
+ 811   4              else if (*(M_Rom + num1) == 3)
+ 812   4              {
+ 813   5                DW_Flag[num1] = 2;
+ 814   5              }
+ 815   4            }
+ 816   3            if (*(M_Rom + 16) > 0)
+ 817   3            {
+ 818   4              Music(*(M_Rom + 16));
+ 819   4            }
+ 820   3            WaitTime = *(M_Rom + 17) * 256 + *(M_Rom + 18);
+ 821   3            if (T_BD)
+ 822   3            {
+ 823   4              uchar j[5];
+ 824   4              j[0] = 0xfd;
+ 825   4              j[1] = 0x03;
+ 826   4              j[2] = 0x71;
+ 827   4              j[3] = P_Set;
+ 828   4              j[4] = j[0] + j[1] + j[2] + j[3];
+ 829   4              UART_Send(j, 5);
+ 830   4            }
+ 831   3            P_Run = 0;
+ 832   3          }
+ 833   2          if (temp1 >= 10)
+ 834   2          {
+ 835   3            temp1 = 0;
+ 836   3            WaitTime--;
+ 837   3            if (WaitTime == 0)
+ 838   3            {
+ 839   4              P_Set++;
+ 840   4              P_Run = 1;
+ 841   4              if (P_Set > F_Set)
+ 842   4              {
+ 843   5                P_Set = 1;
+ 844   5                P_Run = 1;
+ 845   5                F_Run = 0;
+ 846   5              }
+ 847   4            }
+ 848   3          }
+ 849   2        }
+ 850   1      }
+C51 COMPILER V9.60.0.0   0                                                                 06/03/2021 05:11:41 PAGE 15  
+
+ 851          
+ 852          void Uart_Isr() interrupt 4
+ 853          {
+ 854   1        if (RI)
+ 855   1        {
+ 856   2          R_Data[R_Num] = SBUF;
+ 857   2          RI = 0;
+ 858   2          if (R_Data[0] == 0xFD)
+ 859   2          {
+ 860   3            R_Num++;
+ 861   3            if ((R_Data[1] + 2) == R_Num)
+ 862   3            {
+ 863   4              R_CL++;
+ 864   4              R_Num = 0;
+ 865   4              R_Data[0] = 0;
+ 866   4            }
+ 867   3          }
+ 868   2        }
+ 869   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   4708    ----
+   CONSTANT SIZE    =     25    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     81      31
+   IDATA SIZE       =     61      83
+   BIT SIZE         =      7       8
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

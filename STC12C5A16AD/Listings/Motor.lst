@@ -1,0 +1,231 @@
+C51 COMPILER V9.60.0.0   MOTOR                                                             03/01/2022 15:27:40 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MOTOR
+OBJECT MODULE PLACED IN .\Objects\Motor.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE Motor.c OPTIMIZE(8,SPEED) BROWSE INCDIR(..\STC12C5A16AD) DEBUG OBJECTEXT
+                    -END PRINT(.\Listings\Motor.lst) TABS(1) OBJECT(.\Objects\Motor.obj)
+
+line level    source
+
+   1          #include "Motor.h"
+   2          
+   3          void MotorInit()
+   4          {
+   5   1          P0M0 = 0xFF;
+   6   1          P0M1 = 0;
+   7   1          P1M0 = 0;
+   8   1          P1M1 = 0xFF;
+   9   1          P2M0 = 0;
+  10   1          P2M1 = 0;
+  11   1          P3M0 = 0;
+  12   1          P3M1 = 0;
+  13   1          P_Run = 1;
+  14   1          P_Step = 1;
+  15   1          M_D = IapReaduchar(0x2001); //扩展口配置
+  16   1          (M_D & 0x80 / 0x80) ? ((M_D1 = 0), (P2M0 |= 0x01)) : ((M_D1 = 1), (P2M1 |= 0x01));
+  17   1          (M_D & 0x40 / 0x40) ? ((M_D2 = 0), (P2M0 |= 0x02)) : ((M_D2 = 1), (P2M1 |= 0x02));
+  18   1          (M_D & 0x20 / 0x20) ? ((M_D3 = 0), (P2M0 |= 0x04)) : ((M_D3 = 1), (P2M1 |= 0x04));
+  19   1          (M_D & 0x10 / 0x10) ? ((M_D4 = 0), (P2M0 |= 0x08)) : ((M_D4 = 1), (P2M1 |= 0x08));
+  20   1          (M_D & 0x08 / 0x08) ? ((M_D5 = 0), (P2M0 |= 0x10)) : ((M_D5 = 1), (P2M1 |= 0x10));
+  21   1          (M_D & 0x04 / 0x04) ? ((M_D6 = 0), (P2M0 |= 0x20)) : ((M_D6 = 1), (P2M1 |= 0x20));
+  22   1          (M_D & 0x02 / 0x02) ? ((M_D7 = 0), (P2M0 |= 0x40)) : ((M_D7 = 1), (P2M1 |= 0x40));
+  23   1          (M_D & 0x01 / 0x01) ? ((M_D8 = 0), (P2M0 |= 0x80)) : ((M_D8 = 1), (P2M1 |= 0x80));
+  24   1          DW_XZ[0] = IapReaduchar(0x2002);
+  25   1          DW_XZ[1] = IapReaduchar(0x2012);
+  26   1          DW_XZ[2] = IapReaduchar(0x2003);
+  27   1          DW_XZ[3] = IapReaduchar(0x2013);
+  28   1          DW_XZ[4] = IapReaduchar(0x2004);
+  29   1          DW_XZ[5] = IapReaduchar(0x2014);
+  30   1          DW_XZ[6] = IapReaduchar(0x2005);
+  31   1          DW_XZ[7] = IapReaduchar(0x2015);
+  32   1          DW_XZ[8] = IapReaduchar(0x2006);
+  33   1          DW_XZ[9] = IapReaduchar(0x2016);
+  34   1          DW_XZ[10] = IapReaduchar(0x2007);
+  35   1          DW_XZ[11] = IapReaduchar(0x2017);
+  36   1          DW_XZ[12] = IapReaduchar(0x2008);
+  37   1          DW_XZ[13] = IapReaduchar(0x2018);
+  38   1          DW_XZ[14] = IapReaduchar(0x2009);
+  39   1          DW_XZ[15] = IapReaduchar(0x2019);
+  40   1          DW_XZ[16] = IapReaduchar(0x200A);
+  41   1          DW_XZ[17] = IapReaduchar(0x201A);
+  42   1          DW_XZ[18] = IapReaduchar(0x200B);
+  43   1          DW_XZ[19] = IapReaduchar(0x201B);
+  44   1          DW_XZ[20] = IapReaduchar(0x200C);
+  45   1          DW_XZ[21] = IapReaduchar(0x201C);
+  46   1          DW_XZ[22] = IapReaduchar(0x200D);
+  47   1          DW_XZ[23] = IapReaduchar(0x201D);
+  48   1          DW_XZ[24] = IapReaduchar(0x200E);
+  49   1          DW_XZ[25] = IapReaduchar(0x201E);
+  50   1          DW_XZ[26] = IapReaduchar(0x200F);
+  51   1          DW_XZ[27] = IapReaduchar(0x201F);
+  52   1          DW_XZ[28] = IapReaduchar(0x2010);
+  53   1          DW_XZ[29] = IapReaduchar(0x2020);
+  54   1          DW_XZ[30] = IapReaduchar(0x2011);
+C51 COMPILER V9.60.0.0   MOTOR                                                             03/01/2022 15:27:40 PAGE 2   
+
+  55   1          DW_XZ[31] = IapReaduchar(0x2021);
+  56   1      }
+  57          
+  58          void PositioningSignal()
+  59          {
+  60   1          DW[1] = DW1; //定位反馈
+  61   1          DW[2] = DW2;
+  62   1          DW[3] = DW3;
+  63   1          DW[4] = DW4;
+  64   1          DW[5] = DW5;
+  65   1          DW[6] = DW6;
+  66   1          DW[7] = DW7;
+  67   1          DW[8] = DW8;
+  68   1          DW[9] = M_D1;
+  69   1          DW[10] = M_D2;
+  70   1          DW[11] = M_D3;
+  71   1          DW[12] = M_D4;
+  72   1          DW[13] = M_D5;
+  73   1          DW[14] = M_D6;
+  74   1          DW[15] = M_D7;
+  75   1          DW[16] = M_D8;
+  76   1          if (((DW_Flag[0] == 1) && (DW[DW_XZ[0]] == 0)) || ((DW_Flag[0] == 2) && (DW[DW_XZ[1]] == 0))) //定位
+             -监测
+  77   1          {
+  78   2              DW_Flag[0] = 0;
+  79   2              F_Motor[0] = 0;
+  80   2          }
+  81   1          if (((DW_Flag[1] == 1) && (DW[DW_XZ[2]] == 0)) || ((DW_Flag[1] == 2) && (DW[DW_XZ[3]] == 0)))
+  82   1          {
+  83   2              DW_Flag[1] = 0;
+  84   2              F_Motor[1] = 0;
+  85   2          }
+  86   1          if (((DW_Flag[2] == 1) && (DW[DW_XZ[4]] == 0)) || ((DW_Flag[2] == 2) && (DW[DW_XZ[5]] == 0)))
+  87   1          {
+  88   2              DW_Flag[2] = 0;
+  89   2              F_Motor[2] = 0;
+  90   2          }
+  91   1          if (((DW_Flag[3] == 1) && (DW[DW_XZ[6]] == 0)) || ((DW_Flag[3] == 2) && (DW[DW_XZ[7]] == 0)))
+  92   1          {
+  93   2              DW_Flag[3] = 0;
+  94   2              F_Motor[3] = 0;
+  95   2          }
+  96   1          if (((DW_Flag[4] == 1) && (DW[DW_XZ[8]] == 0)) || ((DW_Flag[4] == 2) && (DW[DW_XZ[9]] == 0)))
+  97   1          {
+  98   2              DW_Flag[4] = 0;
+  99   2              F_Motor[4] = 0;
+ 100   2          }
+ 101   1          if (((DW_Flag[5] == 1) && (DW[DW_XZ[10]] == 0)) || ((DW_Flag[5] == 2) && (DW[DW_XZ[11]] == 0)))
+ 102   1          {
+ 103   2              DW_Flag[5] = 0;
+ 104   2              F_Motor[5] = 0;
+ 105   2          }
+ 106   1          if (((DW_Flag[6] == 1) && (DW[DW_XZ[12]] == 0)) || ((DW_Flag[6] == 2) && (DW[DW_XZ[13]] == 0)))
+ 107   1          {
+ 108   2              DW_Flag[6] = 0;
+ 109   2              F_Motor[6] = 0;
+ 110   2          }
+ 111   1          if (((DW_Flag[7] == 1) && (DW[DW_XZ[14]] == 0)) || ((DW_Flag[7] == 2) && (DW[DW_XZ[15]] == 0)))
+ 112   1          {
+ 113   2              DW_Flag[7] = 0;
+ 114   2              F_Motor[7] = 0;
+ 115   2          }
+C51 COMPILER V9.60.0.0   MOTOR                                                             03/01/2022 15:27:40 PAGE 3   
+
+ 116   1          if (((DW_Flag[8] == 1) && (DW[DW_XZ[16]] == 0)) || ((DW_Flag[8] == 2) && (DW[DW_XZ[17]] == 0)))
+ 117   1          {
+ 118   2              DW_Flag[8] = 0;
+ 119   2              F_Motor[8] = 0;
+ 120   2          }
+ 121   1          if (((DW_Flag[9] == 1) && (DW[DW_XZ[18]] == 0)) || ((DW_Flag[9] == 2) && (DW[DW_XZ[19]] == 0)))
+ 122   1          {
+ 123   2              DW_Flag[9] = 0;
+ 124   2              F_Motor[9] = 0;
+ 125   2          }
+ 126   1          if (((DW_Flag[10] == 1) && (DW[DW_XZ[20]] == 0)) || ((DW_Flag[10] == 2) && (DW[DW_XZ[21]] == 0)))
+ 127   1          {
+ 128   2              DW_Flag[10] = 0;
+ 129   2              F_Motor[10] = 0;
+ 130   2          }
+ 131   1          if (((DW_Flag[11] == 1) && (DW[DW_XZ[22]] == 0)) || ((DW_Flag[11] == 2) && (DW[DW_XZ[23]] == 0)))
+ 132   1          {
+ 133   2              DW_Flag[11] = 0;
+ 134   2              F_Motor[11] = 0;
+ 135   2          }
+ 136   1          if (((DW_Flag[12] == 1) && (DW[DW_XZ[24]] == 0)) || ((DW_Flag[12] == 2) && (DW[DW_XZ[25]] == 0)))
+ 137   1          {
+ 138   2              DW_Flag[12] = 0;
+ 139   2              F_Motor[12] = 0;
+ 140   2          }
+ 141   1          if (((DW_Flag[13] == 1) && (DW[DW_XZ[26]] == 0)) || ((DW_Flag[13] == 2) && (DW[DW_XZ[27]] == 0)))
+ 142   1          {
+ 143   2              DW_Flag[13] = 0;
+ 144   2              F_Motor[13] = 0;
+ 145   2          }
+ 146   1          if (((DW_Flag[14] == 1) && (DW[DW_XZ[28]] == 0)) || ((DW_Flag[14] == 2) && (DW[DW_XZ[29]] == 0)))
+ 147   1          {
+ 148   2              DW_Flag[14] = 0;
+ 149   2              F_Motor[14] = 0;
+ 150   2          }
+ 151   1          if (((DW_Flag[15] == 1) && (DW[DW_XZ[30]] == 0)) || ((DW_Flag[15] == 2) && (DW[DW_XZ[31]] == 0)))
+ 152   1          {
+ 153   2              DW_Flag[15] = 0;
+ 154   2              F_Motor[15] = 0;
+ 155   2          }
+ 156   1      }
+ 157          
+ 158          void Motor_Set() //电机启停设置
+ 159          {
+ 160   1          F_Motor[0] ? (Motor1 = 1) : (Motor1 = 0); //电机控制
+ 161   1          F_Motor[1] ? (Motor2 = 1) : (Motor2 = 0);
+ 162   1          F_Motor[2] ? (Motor3 = 1) : (Motor3 = 0);
+ 163   1          F_Motor[3] ? (Motor4 = 1) : (Motor4 = 0);
+ 164   1          F_Motor[4] ? (Motor5 = 1) : (Motor5 = 0);
+ 165   1          F_Motor[5] ? (Motor6 = 1) : (Motor6 = 0);
+ 166   1          F_Motor[6] ? (Motor7 = 1) : (Motor7 = 0);
+ 167   1          F_Motor[7] ? (Motor8 = 1) : (Motor8 = 0);
+ 168   1          if ((M_D & 0x80) / 0x80 == 1)
+ 169   1          {
+ 170   2              F_Motor[8] ? (M_D1 = 1) : (M_D1 = 0);
+ 171   2          }
+ 172   1          if ((M_D & 0x40) / 0x40 == 1)
+ 173   1          {
+ 174   2              F_Motor[9] ? (M_D2 = 1) : (M_D2 = 0);
+ 175   2          }
+ 176   1          if ((M_D & 0x20) / 0x20 == 1)
+ 177   1          {
+C51 COMPILER V9.60.0.0   MOTOR                                                             03/01/2022 15:27:40 PAGE 4   
+
+ 178   2              F_Motor[10] ? (M_D3 = 1) : (M_D3 = 0);
+ 179   2          }
+ 180   1          if ((M_D & 0x10) / 0x10 == 1)
+ 181   1          {
+ 182   2              F_Motor[11] ? (M_D4 = 1) : (M_D4 = 0);
+ 183   2          }
+ 184   1          if ((M_D & 0x08) / 0x08 == 1)
+ 185   1          {
+ 186   2              F_Motor[12] ? (M_D5 = 1) : (M_D5 = 0);
+ 187   2          }
+ 188   1          if ((M_D & 0x04) / 0x04 == 1)
+ 189   1          {
+ 190   2              F_Motor[13] ? (M_D6 = 1) : (M_D6 = 0);
+ 191   2          }
+ 192   1          if ((M_D & 0x02) / 0x02 == 1)
+ 193   1          {
+ 194   2              F_Motor[14] ? (M_D7 = 1) : (M_D7 = 0);
+ 195   2          }
+ 196   1          if ((M_D & 0x01) / 0x01 == 1)
+ 197   1          {
+ 198   2              F_Motor[15] ? (M_D8 = 1) : (M_D8 = 0);
+ 199   2          }
+ 200   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1480    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
