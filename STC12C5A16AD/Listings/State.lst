@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.0.0   STATE                                                             03/01/2022 15:45:41 PAGE 1   
+C51 COMPILER V9.60.0.0   STATE                                                             03/01/2022 16:39:56 PAGE 1   
 
 
 C51 COMPILER V9.60.0.0, COMPILATION OF MODULE STATE
@@ -16,7 +16,6 @@ line level    source
    6   1          if (F_Run)
    7   1          {
    8   2              ProgramRun();
-*** WARNING C206 IN LINE 8 OF State.c: 'ProgramRun': missing function-prototype
    9   2              PositioningSignal();
   10   2              Motor_Set();
   11   2          }
@@ -34,4 +33,4 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

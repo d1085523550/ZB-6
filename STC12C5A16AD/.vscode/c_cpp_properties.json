@@ -3,7 +3,7 @@
         {
             "name": "Target 1",
             "includePath": [
-                "c:\\Users\\Administrator\\Desktop\\ZB-6大板控制板\\12C5A\\STC12C5A16AD",
+                "c:\\Users\\Administrator\\Desktop\\ZB-6\\STC12C5A16AD",
                 "D:\\Keil_v5\\C51\\INC"
             ],
             "defines": [

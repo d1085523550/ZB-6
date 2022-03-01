@@ -5,7 +5,7 @@
 
 //库函数
 #include <STC12C5A60S2.H>
-#include "intrins.h"
+#include <intrins.h>
 
 //头文件
 #include "EEPROM_Iap.H"
@@ -13,7 +13,7 @@
 #include "Motor.h"
 #include "State.h"
 #include "Data.h"
-//#include "Automation.h"
+#include "Automation.h"
 
 #define FOSC 24000000L                  //晶振频率
 #define T0Time 65536 - FOSC / 12 / 100  // T0时钟
