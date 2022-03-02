@@ -56,9 +56,10 @@ void DATA_CL() //接收到的数据进行效验处理
 void DATA_Que(uchar *i) //接收到有效数据，分类并处理
 {
 	uchar idata j[5] = {0xfd, 0x03, 0x90, 0x10, 0xa0};
+	uchar k, l;
 	switch (i[0])
 	{
-	case 0x01: //设置参数
+	case 0x01:					//设置参数
 		IapEraseSector(0x2000); //扇区擦除
 		IapEraseSector(0x2200);
 		IapEraseSector(0x2400);
@@ -71,50 +72,55 @@ void DATA_Que(uchar *i) //接收到有效数据，分类并处理
 		IapProgramuchar(0x2001, i[2]); //扩展口电机/定位选择
 		UART_Send(j, 5);
 		break;
-	
-	case 0x10  0x1f) //设置定位参数
-	{
+	case 0x10: //设置定位参数
+	case 0x11:
+	case 0x12:
+	case 0x13:
+	case 0x14:
+	case 0x15:
+	case 0x16:
+	case 0x17:
+	case 0x18:
+	case 0x19:
+	case 0x1a:
+	case 0x1b:
+	case 0x1c:
+	case 0x1d:
+	case 0x1e:
+	case 0x1f:
 		i[0] = i[0] - 0x10;
 		IapProgramuchar(0x2010 + i[0], i[1]); //定位1 端口选择 2010-201F
 		IapProgramuchar(0x2020 + i[0], i[2]); //定位2 端口选择 2020-202F
 		UART_Send(j, 5);
-	}
-	else if (i[0] == 0x20) //程序段总数
-	{
+		break;
+	case 0x20:						   //程序段总数
 		IapProgramuchar(0x2030, i[1]); //程序0段总段数
 		IapProgramuchar(0x2031, i[2]); //程序1段总段数
 		IapProgramuchar(0x2032, i[3]); //程序2段总段数
 		UART_Send(j, 5);
-	}
-	else if (i[0] == 0x21) //程序0段写入
-	{
-		uchar k, l;
+		break;
+	case 0x21: //程序0段写入
 		for (k = 0, l = 19; k < 19; k++, l--)
 		{
 			IapProgramuchar((i[1] + 1) * 19 - l + 0x2100, i[k + 2]); //循环写入数据 2100-25F9里
 		}
 		UART_Send(j, 5);
-	}
-	else if (i[0] == 0x22) //程序1段写入
-	{
-		uchar k, l;
+		break;
+	case 0x22: //程序1段写入
 		for (k = 0, l = 19; k < 19; k++, l--)
 		{
 			IapProgramuchar((i[1] + 1) * 19 - l + 0x2600, i[k + 2]); //循环写入数据 2600-2AF9里
 		}
 		UART_Send(j, 5);
-	}
-	else if (i[0] == 0x23) //程序2段写入
-	{
-		uchar k, l;
+		break;
+	case 0x23: //程序2段写入
 		for (k = 0, l = 19; k < 19; k++, l--)
 		{
 			IapProgramuchar((i[1] + 1) * 19 - l + 0x2b00, i[k + 2]); //循环写入数据 2b00-2FF9里
 		}
 		UART_Send(j, 5);
-	}
-	else if (i[0] == 0x30) //电机定位状态返回
-	{
+		break;
+	case 0x30: //电机定位状态返回
 		if (i[1] == 1)
 		{
 			T_Flag = 1;
@@ -123,36 +129,31 @@ void DATA_Que(uchar *i) //接收到有效数据，分类并处理
 		{
 			T_Flag = 0;
 		}
-	}
-	else if (i[0] == 0x31) //强制停止
-	{
+		break;
+	case 0x31: //强制停止
 		if (i[1] == 1)
 		{
 			IAP_CONTR = 0X20;
 		}
-	}
-	else if (i[0] == 0x32 || i[0] == 0x35) //单段程序启动
-	{
-		uchar j;
-		for (j = 0; j < 18; j++)
+		break;
+	case 0x32: //单段程序启动
+	case 0x35:
+		for (k = 0; k < 18; k++)
 		{
-			P_Rom[j] = i[j + 1];
+			P_Rom[k] = i[k + 1];
 		}
-	}
-	else if (i[0] == 0x33) //程序位置返回
-	{
-	}
-	else if (i[0] == 0x65) //下载完成 并重启
-	{
+		break;
+	case 0x33: //程序位置返回
+		break;
+	case 0x65: //下载完成 并重启
 		if (i[1] == 0x10)
 		{
 			IAP_CONTR = 0X20; //重启单片机
 		}
-	}
-	else if (i[0] == 0xa0) //上传标志
-	{
-	}
-	else if (i[0] == 0x90) //数据是否正确
-	{
+		break;
+	case 0xa0: //上传标志
+		break;
+	case 0x90: //数据是否正确
+		break;
 	}
 }
