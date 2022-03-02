@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.0.0   EEPROM_IAP                                                        03/01/2022 16:39:55 PAGE 1   
+C51 COMPILER V9.60.0.0   EEPROM_IAP                                                        03/02/2022 08:57:03 PAGE 1   
 
 
 C51 COMPILER V9.60.0.0, COMPILATION OF MODULE EEPROM_IAP
@@ -62,7 +62,7 @@ line level    source
   52   1          IapIdle();
   53   1      }
   54          
-C51 COMPILER V9.60.0.0   EEPROM_IAP                                                        03/01/2022 16:39:55 PAGE 2   
+C51 COMPILER V9.60.0.0   EEPROM_IAP                                                        03/02/2022 08:57:03 PAGE 2   
 
   55          /*----------------------------
   56          扇区擦除
