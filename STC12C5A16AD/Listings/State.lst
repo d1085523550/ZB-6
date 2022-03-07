@@ -1,10 +1,10 @@
-C51 COMPILER V9.60.0.0   STATE                                                             03/02/2022 11:41:16 PAGE 1   
+C51 COMPILER V9.60.0.0   STATE                                                             03/07/2022 13:33:44 PAGE 1   
 
 
 C51 COMPILER V9.60.0.0, COMPILATION OF MODULE STATE
 OBJECT MODULE PLACED IN .\Objects\State.obj
-COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE State.c OPTIMIZE(8,SPEED) BROWSE INCDIR(..\STC12C5A16AD) DEBUG OBJECTEXT
-                    -END PRINT(.\Listings\State.lst) TABS(1) OBJECT(.\Objects\State.obj)
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE State.c OPTIMIZE(8,SPEED) BROWSE INCDIR(..\STC12C5A16AD) DEBUG OBJECTEXTEND
+                    - PRINT(.\Listings\State.lst) TABS(2) OBJECT(.\Objects\State.obj)
 
 line level    source
 

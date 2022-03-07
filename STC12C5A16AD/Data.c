@@ -59,7 +59,8 @@ void DATA_Que(uchar *i) //接收到有效数据，分类并处理
 	uchar k, l;
 	switch (i[0])
 	{
-	case 0x01:					//设置参数
+
+	case 0x00:					//握手信号
 		IapEraseSector(0x2000); //扇区擦除
 		IapEraseSector(0x2200);
 		IapEraseSector(0x2400);
@@ -68,11 +69,17 @@ void DATA_Que(uchar *i) //接收到有效数据，分类并处理
 		IapEraseSector(0x2a00);
 		IapEraseSector(0x2c00);
 		IapEraseSector(0x2e00);
-		IapProgramuchar(0x2000, i[1]); //电机数
+		UART_Send(j, 5);
+		break;
+	case 0x01:						   //设置参数
 		IapProgramuchar(0x2001, i[2]); //扩展口电机/定位选择
 		UART_Send(j, 5);
 		break;
 	case 0x10: //设置定位参数
+		IapProgramuchar(0x2010 + i[0], i[1]); //定位1 端口选择 2010-201F
+		IapProgramuchar(0x2020 + i[0], i[2]); //定位2 端口选择 2020-202F
+		UART_Send(j, 5);
+		break;
 	case 0x11:
 	case 0x12:
 	case 0x13:

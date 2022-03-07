@@ -3,8 +3,7 @@
         {
             "name": "Target 1",
             "includePath": [
-                "c:\\Users\\Administrator\\Desktop\\ZB-6\\STC12C5A16AD",
-                "D:\\Keil_v5\\C51\\INC"
+                "c:\\Users\\Administrator\\Desktop\\ZB-6\\STC12C5A16AD"
             ],
             "defines": [
                 "__C51__",

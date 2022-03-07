@@ -1,10 +1,10 @@
-C51 COMPILER V9.60.0.0   MAIN                                                              03/02/2022 11:41:15 PAGE 1   
+C51 COMPILER V9.60.0.0   MAIN                                                              03/07/2022 13:33:44 PAGE 1   
 
 
 C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
 OBJECT MODULE PLACED IN .\Objects\Main.obj
-COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE Main.c OPTIMIZE(8,SPEED) BROWSE INCDIR(..\STC12C5A16AD) DEBUG OBJECTEXTE
-                    -ND PRINT(.\Listings\Main.lst) TABS(1) OBJECT(.\Objects\Main.obj)
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE Main.c OPTIMIZE(8,SPEED) BROWSE INCDIR(..\STC12C5A16AD) DEBUG OBJECTEXTEND 
+                    -PRINT(.\Listings\Main.lst) TABS(2) OBJECT(.\Objects\Main.obj)
 
 line level    source
 
@@ -38,43 +38,43 @@ line level    source
   28          
   29          void HardwareInit() //硬件初始
   30          {
-  31   1       TIM_Init();
-  32   1       UartInit();
+  31   1        TIM_Init();
+  32   1        UartInit();
   33   1      }
   34          
   35          void DataInit() //数据初始化
   36          {
-  37   1       P_Run = 1;
-  38   1       P_Step = 1;
+  37   1        P_Run = 1;
+  38   1        P_Step = 1;
   39   1      }
   40          
   41          void main()
   42          {
-  43   1       HardwareInit();
-  44   1       DataInit();
-  45   1       while (1)
-  46   1       {
-  47   2        MainCycle();
-  48   2       }
+  43   1        HardwareInit();
+  44   1        DataInit();
+  45   1        while (1)
+  46   1        {
+  47   2          MainCycle();
+  48   2        }
   49   1      }
   50          
   51          void T0_Isr() interrupt 1 //时钟
   52          {
-  53   1       TH0 = T0Time >> 8;
-  54   1       TL0 = T0Time;
-C51 COMPILER V9.60.0.0   MAIN                                                              03/02/2022 11:41:15 PAGE 2   
+  53   1        TH0 = T0Time >> 8;
+  54   1        TL0 = T0Time;
+C51 COMPILER V9.60.0.0   MAIN                                                              03/07/2022 13:33:44 PAGE 2   
 
-  55   1       TF0 = 0;
-  56   1       temp1++;
-  57   1       if (HW_Delay > 0)
-  58   1        HW_Delay--;
-  59   1       if (YK_Delay > 0)
-  60   1        YK_Delay--;
-  61   1       XD_Run ? (XD_Delay++) : (XD_Delay = 0);
-  62   1       if (F_Run == 1 && P_Run == 0 && WaitTime != 0)
-  63   1       {
-  64   2        WaitTime--;
-  65   2       }
+  55   1        TF0 = 0;
+  56   1        temp1++;
+  57   1        if (HW_Delay > 0)
+  58   1          HW_Delay--;
+  59   1        if (YK_Delay > 0)
+  60   1          YK_Delay--;
+  61   1        XD_Run ? (XD_Delay++) : (XD_Delay = 0);
+  62   1        if (F_Run == 1 && P_Run == 0 && WaitTime != 0)
+  63   1        {
+  64   2          WaitTime--;
+  65   2        }
   66   1      }
 
 
