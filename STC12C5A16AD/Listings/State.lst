@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.0.0   STATE                                                             03/07/2022 13:33:44 PAGE 1   
+C51 COMPILER V9.60.0.0   STATE                                                             03/08/2022 17:01:37 PAGE 1   
 
 
 C51 COMPILER V9.60.0.0, COMPILATION OF MODULE STATE
@@ -19,11 +19,15 @@ line level    source
    9   2              PositioningSignal();
   10   2              Motor_Set();
   11   2          }
-  12   1      }
+  12   1          while (T_YZ)
+  13   1          {
+  14   2              SendData();
+  15   2          }
+  16   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     16    ----
+   CODE SIZE        =     25    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

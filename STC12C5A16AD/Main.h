@@ -71,8 +71,9 @@ extern uchar T_ROM_D2;               //程序段2 总段数
 extern uchar F_ROM_Set;              //程序段选择设置
 extern uchar F_ROM_Temp;             //程序段切换检测
 extern uint T_Step;                  //上传步骤计数
+extern uint T_Step_Temp;             //上传步骤暂存
 extern uchar T_YZ;                   //上传程序验证
-extern uchar SendCRC;                //数据上传效验码
+extern uchar T_Num;                  //上传程序段号
 extern uint YK_Delay;                //遥控延时
 extern uint HW_Delay;                //触发延时
 extern uint XD_Delay;                //选段延时

@@ -4,5 +4,6 @@
 
 void DATA_CL();
 void DATA_Que(uchar *i);
+void SendData();
 
 #endif

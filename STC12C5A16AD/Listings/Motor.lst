@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.0.0   MOTOR                                                             03/07/2022 13:33:44 PAGE 1   
+C51 COMPILER V9.60.0.0   MOTOR                                                             03/08/2022 17:01:37 PAGE 1   
 
 
 C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MOTOR
@@ -62,7 +62,7 @@ line level    source
   52   1          DW_XZ[28] = IapReaduchar(0x2010);
   53   1          DW_XZ[29] = IapReaduchar(0x2020);
   54   1          DW_XZ[30] = IapReaduchar(0x2011);
-C51 COMPILER V9.60.0.0   MOTOR                                                             03/07/2022 13:33:44 PAGE 2   
+C51 COMPILER V9.60.0.0   MOTOR                                                             03/08/2022 17:01:37 PAGE 2   
 
   55   1          DW_XZ[31] = IapReaduchar(0x2021);
   56   1      }
@@ -126,7 +126,7 @@ line level    source
  113   2              DW_Flag[7] = 0;
  114   2              F_Motor[7] = 0;
  115   2          }
-C51 COMPILER V9.60.0.0   MOTOR                                                             03/07/2022 13:33:44 PAGE 3   
+C51 COMPILER V9.60.0.0   MOTOR                                                             03/08/2022 17:01:37 PAGE 3   
 
  116   1          if (((DW_Flag[8] == 1) && (DW[DW_XZ[16]] == 0)) || ((DW_Flag[8] == 2) && (DW[DW_XZ[17]] == 0)))
  117   1          {
@@ -190,7 +190,7 @@ line level    source
  175   2          }
  176   1          if ((M_D & 0x20) / 0x20 == 1)
  177   1          {
-C51 COMPILER V9.60.0.0   MOTOR                                                             03/07/2022 13:33:44 PAGE 4   
+C51 COMPILER V9.60.0.0   MOTOR                                                             03/08/2022 17:01:37 PAGE 4   
 
  178   2              F_Motor[10] ? (M_D3 = 1) : (M_D3 = 0);
  179   2          }

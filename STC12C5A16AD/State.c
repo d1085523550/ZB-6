@@ -9,4 +9,8 @@ void MainCycle()
         PositioningSignal();
         Motor_Set();
     }
+    while (T_YZ)
+    {
+        SendData();
+    }
 }
