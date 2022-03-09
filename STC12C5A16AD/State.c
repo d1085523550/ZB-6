@@ -2,15 +2,19 @@
 
 void MainCycle()
 {
-    KeyTrigger();
+    DATA_CL();
     if (F_Run)
     {
         ProgramRun();
         PositioningSignal();
         Motor_Set();
     }
-    while (T_YZ)
+    if (T_YZ)
     {
         SendData();
+    }
+    else
+    {
+        KeyTrigger();
     }
 }

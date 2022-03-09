@@ -60,6 +60,7 @@ void DATA_Que(uchar *i) //接收到有效数据，分类并处理
 	switch (i[0])
 	{
 	case 0x00: //握手信号
+		F_Run = 0;
 		j[3] = 0xF0;
 		j[4] = 0x90;
 		UART_Send(j, 5);
@@ -207,6 +208,11 @@ void DATA_Que(uchar *i) //接收到有效数据，分类并处理
 		{
 			T_Step_Temp = T_Step;
 		}
+		else if (i[1] == 0x90)
+		{
+			T_Num++;
+			T_Step_Temp = T_Step;
+		}
 	}
 	default:
 		i[0] = 0xFD;
@@ -219,9 +225,9 @@ void DATA_Que(uchar *i) //接收到有效数据，分类并处理
 	}
 }
 
-void SendData()
+void SendData() //上传数据
 {
-	uchar idata i[16], k;
+	uchar idata i[16], k, l;
 	i[0] = 0xfd;
 	i[2] = 0x4f + T_Step_Temp;
 	switch (T_Step_Temp)
@@ -288,18 +294,70 @@ void SendData()
 		}
 		i[13] = i[0] + i[1] + i[2] + i[3] + i[4] + i[5] + i[6] + i[7] + i[8] + i[9] + i[10] + i[11] + i[12];
 		UART_Send(i, 14);
-		T_Num++;
 		if (T_Num >= T_ROM_D0)
 		{
 			i[1] = 0x03;
 			i[2] = 0xa0;
 			i[3] = 0xff;
 			i[4] = i[0] + i[1] + i[2] + i[3];
+			UART_Send(i, 5);
 		}
 		break;
 	case 35:
+		i[1] = 12;
+		i[3] = T_Num;
+		for (k = 0, l = 9; k < 9; k++, l--)
+		{
+			i[k + 4] = IapReaduchar((T_Num + 1) * 9 - l + 0x2755); //循环写入数据 2755-2DA9里
+		}
+		i[13] = i[0] + i[1] + i[2] + i[3] + i[4] + i[5] + i[6] + i[7] + i[8] + i[9] + i[10] + i[11] + i[12];
+		UART_Send(i, 14);
+		if (T_Num >= T_ROM_D1)
+		{
+			i[1] = 0x03;
+			i[2] = 0xa0;
+			i[3] = 0xff;
+			i[4] = i[0] + i[1] + i[2] + i[3];
+			UART_Send(i, 5);
+		}
 		break;
 	case 36:
+		i[1] = 12;
+		i[3] = T_Num;
+		for (k = 0, l = 9; k < 9; k++, l--)
+		{
+			i[k + 4] = IapReaduchar((T_Num + 1) * 9 - l + 0x2DAA); //循环写入数据 2DAA-33FE里
+		}
+		i[13] = i[0] + i[1] + i[2] + i[3] + i[4] + i[5] + i[6] + i[7] + i[8] + i[9] + i[10] + i[11] + i[12];
+		UART_Send(i, 14);
+		if (T_Num >= T_ROM_D2)
+		{
+			i[1] = 0x03;
+			i[2] = 0xa0;
+			i[3] = 0xff;
+			i[4] = i[0] + i[1] + i[2] + i[3];
+			UART_Send(i, 5);
+		}
+		break;
+	case 37:
+		i[1] = 0x03;
+		i[2] = 0x74;
+		i[3] = T_ROM_D0;
+		i[4] = T_ROM_D1;
+		i[5] = T_ROM_D2;
+		i[6] = i[0] + i[1] + i[2] + i[3] + i[4] + i[5];
+		UART_Send(i, 7);
+		break;
+	case 38:
+		i[1] = 0x03;
+		i[2] = 0x75;
+		i[3] = 0x10;
+		i[4] = 0x75;
+		i[5] = i[0] + i[1] + i[2] + i[3] + i[4];
+		UART_Send(i, 7);
+		break;
+	case 39:
+		T_YZ = 0;
 		break;
 	}
 	T_Step_Temp = 0;

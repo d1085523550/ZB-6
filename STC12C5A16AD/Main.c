@@ -37,6 +37,7 @@ void DataInit() //数据初始化
 {
 	P_Run = 1;
 	P_Step = 1;
+	MotorInit();
 }
 
 void main()

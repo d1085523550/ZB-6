@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.0.0   STATE                                                             03/08/2022 17:01:37 PAGE 1   
+C51 COMPILER V9.60.0.0   STATE                                                             03/09/2022 13:22:40 PAGE 1   
 
 
 C51 COMPILER V9.60.0.0, COMPILATION OF MODULE STATE
@@ -12,22 +12,26 @@ line level    source
    2          
    3          void MainCycle()
    4          {
-   5   1          KeyTrigger();
+   5   1          DATA_CL();
    6   1          if (F_Run)
    7   1          {
    8   2              ProgramRun();
    9   2              PositioningSignal();
   10   2              Motor_Set();
   11   2          }
-  12   1          while (T_YZ)
+  12   1          if (T_YZ)
   13   1          {
   14   2              SendData();
   15   2          }
-  16   1      }
+  16   1          else
+  17   1          {
+  18   2              KeyTrigger();
+  19   2          }
+  20   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     25    ----
+   CODE SIZE        =     26    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

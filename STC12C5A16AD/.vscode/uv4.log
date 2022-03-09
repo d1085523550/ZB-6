@@ -7,47 +7,10 @@ compiling State.c...
 compiling Automation.c...
 compiling Data.c...
 linking...
-
-BL51 BANKED LINKER/LOCATER V6.22.2.0 - SN: Eval Version
-COPYRIGHT ARM Germany GmbH 1987 - 2017
-".\Objects\Main.obj",
-".\Objects\EEPROM_Iap.obj",
-".\Objects\HardWare.obj",
-".\Objects\Motor.obj",
-".\Objects\State.obj",
-".\Objects\Automation.obj",
-".\Objects\Data.obj" 
-TO ".\Objects\STC12C5A16AD" 
-PRINT(".\Listings\STC12C5A16AD.m51") RAMSIZE(256) 
-
-
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_TEST_SEND?HARDWARE
 
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?MOTORINIT?MOTOR
-
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?DATA_CL?DATA
-
-******************************************************************************
-* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 1543H BYTE (265%) *
-******************************************************************************
-
-Program Size: data=218.5 xdata=0 code=6040
-LINK/LOCATE RUN COMPLETE.  3 WARNING(S),  0 ERROR(S)
-
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_TEST_SEND?HARDWARE
-
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?MOTORINIT?MOTOR
-
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?DATA_CL?DATA
-
-*** FATAL ERROR L250: CODE SIZE LIMIT IN RESTRICTED VERSION EXCEEDED
-    MODULE:  D:\KEIL\C51\LIB\C51S.LIB (-----)
-    LIMIT:   0800H BYTES
-Target not created.
-Build Time Elapsed:  00:00:02
+Program Size: data=193.5 xdata=0 code=6699
+creating hex file from ".\Objects\STC12C5A16AD"...
+".\Objects\STC12C5A16AD" - 0 Error(s), 1 Warning(s).
+Build Time Elapsed:  00:00:01

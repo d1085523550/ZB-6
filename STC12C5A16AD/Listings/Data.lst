@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.0.0   DATA                                                              03/08/2022 17:01:37 PAGE 1   
+C51 COMPILER V9.60.0.0   DATA                                                              03/09/2022 13:22:41 PAGE 1   
 
 
 C51 COMPILER V9.60.0.0, COMPILATION OF MODULE DATA
@@ -62,7 +62,7 @@ line level    source
   52   2          R_CL--;
   53   2        }
   54   1      }
-C51 COMPILER V9.60.0.0   DATA                                                              03/08/2022 17:01:37 PAGE 2   
+C51 COMPILER V9.60.0.0   DATA                                                              03/09/2022 13:22:41 PAGE 2   
 
   55          
   56          void DATA_Que(uchar *i) //接收到有效数据，分类并处理
@@ -72,257 +72,328 @@ line level    source
   60   1        switch (i[0])
   61   1        {
   62   2        case 0x00: //握手信号
-  63   2          j[3] = 0xF0;
-  64   2          j[4] = 0x90;
-  65   2          UART_Send(j, 5);
-  66   2          IapEraseSector(0x2000); //扇区擦除
-  67   2          IapEraseSector(0x2200);
-  68   2          IapEraseSector(0x2400);
-  69   2          IapEraseSector(0x2600);
-  70   2          IapEraseSector(0x2800);
-  71   2          IapEraseSector(0x2a00);
-  72   2          IapEraseSector(0x2c00);
-  73   2          IapEraseSector(0x2e00);
-  74   2          IapEraseSector(0x3000);
-  75   2          IapEraseSector(0x3200);
-  76   2          j[3] = 0x10;
-  77   2          j[4] = 0xb0;
-  78   2          UART_Send(j, 5);
-  79   2          break;
-  80   2        case 0x01:               //设置参数
-  81   2          IapProgramuchar(0x2001, i[2]); //扩展口电机/定位选择
-  82   2          UART_Send(j, 5);
-  83   2          break;
-  84   2        case 0x02: //设置定位参数
-  85   2        case 0x03:
-  86   2        case 0x04:
-  87   2        case 0x05:
-  88   2        case 0x06:
-  89   2        case 0x07:
-  90   2        case 0x08:
-  91   2        case 0x09:
-  92   2        case 0x0A:
-  93   2        case 0x0B:
-  94   2        case 0x0C:
-  95   2        case 0x0D:
-  96   2        case 0x0E:
-  97   2        case 0x0F:
-  98   2        case 0x10:
-  99   2        case 0x11:
- 100   2          IapProgramuchar(0x2000 + i[0], i[1]); //定位1 端口选择 2002-2011
- 101   2          IapProgramuchar(0x2010 + i[0], i[2]); //定位2 端口选择 2012-2021
- 102   2          UART_Send(j, 5);
- 103   2          break;
- 104   2        case 0x12: //动作名称
- 105   2        case 0x13:
- 106   2        case 0x14:
- 107   2        case 0x15:
- 108   2        case 0x16:
- 109   2        case 0x17:
- 110   2        case 0x18:
- 111   2        case 0x19:
- 112   2        case 0x1A:
- 113   2        case 0x1B:
- 114   2        case 0x1C:
- 115   2        case 0x1D:
- 116   2        case 0x1E:
-C51 COMPILER V9.60.0.0   DATA                                                              03/08/2022 17:01:37 PAGE 3   
+  63   2          F_Run = 0;
+  64   2          j[3] = 0xF0;
+  65   2          j[4] = 0x90;
+  66   2          UART_Send(j, 5);
+  67   2          IapEraseSector(0x2000); //扇区擦除
+  68   2          IapEraseSector(0x2200);
+  69   2          IapEraseSector(0x2400);
+  70   2          IapEraseSector(0x2600);
+  71   2          IapEraseSector(0x2800);
+  72   2          IapEraseSector(0x2a00);
+  73   2          IapEraseSector(0x2c00);
+  74   2          IapEraseSector(0x2e00);
+  75   2          IapEraseSector(0x3000);
+  76   2          IapEraseSector(0x3200);
+  77   2          j[3] = 0x10;
+  78   2          j[4] = 0xb0;
+  79   2          UART_Send(j, 5);
+  80   2          break;
+  81   2        case 0x01:               //设置参数
+  82   2          IapProgramuchar(0x2001, i[2]); //扩展口电机/定位选择
+  83   2          UART_Send(j, 5);
+  84   2          break;
+  85   2        case 0x02: //设置定位参数
+  86   2        case 0x03:
+  87   2        case 0x04:
+  88   2        case 0x05:
+  89   2        case 0x06:
+  90   2        case 0x07:
+  91   2        case 0x08:
+  92   2        case 0x09:
+  93   2        case 0x0A:
+  94   2        case 0x0B:
+  95   2        case 0x0C:
+  96   2        case 0x0D:
+  97   2        case 0x0E:
+  98   2        case 0x0F:
+  99   2        case 0x10:
+ 100   2        case 0x11:
+ 101   2          IapProgramuchar(0x2000 + i[0], i[1]); //定位1 端口选择 2002-2011
+ 102   2          IapProgramuchar(0x2010 + i[0], i[2]); //定位2 端口选择 2012-2021
+ 103   2          UART_Send(j, 5);
+ 104   2          break;
+ 105   2        case 0x12: //动作名称
+ 106   2        case 0x13:
+ 107   2        case 0x14:
+ 108   2        case 0x15:
+ 109   2        case 0x16:
+ 110   2        case 0x17:
+ 111   2        case 0x18:
+ 112   2        case 0x19:
+ 113   2        case 0x1A:
+ 114   2        case 0x1B:
+ 115   2        case 0x1C:
+ 116   2        case 0x1D:
+C51 COMPILER V9.60.0.0   DATA                                                              03/09/2022 13:22:41 PAGE 3   
 
- 117   2        case 0x1F:
- 118   2        case 0x20:
- 119   2        case 0x21:
- 120   2          for (k = 0; k < 12; k++)
- 121   2          {
- 122   3            IapProgramuchar(0x2022 + (i[0] - 0x12) * 12 + k, i[k + 1]);
- 123   3          }
- 124   2          UART_Send(j, 5);
- 125   2          break;
- 126   2        case 0x22:               //程序段总数
- 127   2          IapProgramuchar(0x20E2, i[1]); //程序0段总段数
- 128   2          IapProgramuchar(0x20E3, i[2]); //程序1段总段数
- 129   2          IapProgramuchar(0x20E4, i[3]); //程序2段总段数
- 130   2          UART_Send(j, 5);
- 131   2          break;
- 132   2        case 0x23: //程序0段写入
- 133   2          for (k = 0, l = 9; k < 9; k++, l--)
- 134   2          {
- 135   3            IapProgramuchar((i[1] + 1) * 9 - l + 0x2100, i[k + 2]); //循环写入数据 2100-25F9里
- 136   3          }
- 137   2          UART_Send(j, 5);
- 138   2          break;
- 139   2        case 0x24: //程序1段写入
- 140   2          for (k = 0, l = 9; k < 9; k++, l--)
- 141   2          {
- 142   3            IapProgramuchar((i[1] + 1) * 9 - l + 0x2755, i[k + 2]); //循环写入数据 2600-2AF9里
- 143   3          }
- 144   2          UART_Send(j, 5);
- 145   2          break;
- 146   2        case 0x25: //程序2段写入
- 147   2          for (k = 0, l = 9; k < 9; k++, l--)
- 148   2          {
- 149   3            IapProgramuchar((i[1] + 1) * 9 - l + 0x2DAA, i[k + 2]); //循环写入数据 2b00-2FF9里
- 150   3          }
- 151   2          UART_Send(j, 5);
- 152   2          break;
- 153   2        case 0x26: //下载完成 并重启
- 154   2          if (i[1] == 0xF0)
- 155   2          {
- 156   3            IAP_CONTR = 0X20; //重启单片机
- 157   3          }
- 158   2          break;
- 159   2        case 0x30: //电机定位状态返回
- 160   2          if (i[1] == 1)
- 161   2          {
- 162   3            T_Flag = 1;
- 163   3          }
- 164   2          else
- 165   2          {
- 166   3            T_Flag = 0;
- 167   3          }
- 168   2          break;
- 169   2        case 0x31: //强制停止
- 170   2          if (i[1] == 1)
- 171   2          {
- 172   3            IAP_CONTR = 0X20;
- 173   3          }
- 174   2          break;
- 175   2        case 0x32: //单段程序启动
- 176   2        case 0x35:
- 177   2          for (k = 0; k < 18; k++)
- 178   2          {
-C51 COMPILER V9.60.0.0   DATA                                                              03/08/2022 17:01:37 PAGE 4   
+ 117   2        case 0x1E:
+ 118   2        case 0x1F:
+ 119   2        case 0x20:
+ 120   2        case 0x21:
+ 121   2          for (k = 0; k < 12; k++)
+ 122   2          {
+ 123   3            IapProgramuchar(0x2022 + (i[0] - 0x12) * 12 + k, i[k + 1]);
+ 124   3          }
+ 125   2          UART_Send(j, 5);
+ 126   2          break;
+ 127   2        case 0x22:               //程序段总数
+ 128   2          IapProgramuchar(0x20E2, i[1]); //程序0段总段数
+ 129   2          IapProgramuchar(0x20E3, i[2]); //程序1段总段数
+ 130   2          IapProgramuchar(0x20E4, i[3]); //程序2段总段数
+ 131   2          UART_Send(j, 5);
+ 132   2          break;
+ 133   2        case 0x23: //程序0段写入
+ 134   2          for (k = 0, l = 9; k < 9; k++, l--)
+ 135   2          {
+ 136   3            IapProgramuchar((i[1] + 1) * 9 - l + 0x2100, i[k + 2]); //循环写入数据 2100-25F9里
+ 137   3          }
+ 138   2          UART_Send(j, 5);
+ 139   2          break;
+ 140   2        case 0x24: //程序1段写入
+ 141   2          for (k = 0, l = 9; k < 9; k++, l--)
+ 142   2          {
+ 143   3            IapProgramuchar((i[1] + 1) * 9 - l + 0x2755, i[k + 2]); //循环写入数据 2600-2AF9里
+ 144   3          }
+ 145   2          UART_Send(j, 5);
+ 146   2          break;
+ 147   2        case 0x25: //程序2段写入
+ 148   2          for (k = 0, l = 9; k < 9; k++, l--)
+ 149   2          {
+ 150   3            IapProgramuchar((i[1] + 1) * 9 - l + 0x2DAA, i[k + 2]); //循环写入数据 2b00-2FF9里
+ 151   3          }
+ 152   2          UART_Send(j, 5);
+ 153   2          break;
+ 154   2        case 0x26: //下载完成 并重启
+ 155   2          if (i[1] == 0xF0)
+ 156   2          {
+ 157   3            IAP_CONTR = 0X20; //重启单片机
+ 158   3          }
+ 159   2          break;
+ 160   2        case 0x30: //电机定位状态返回
+ 161   2          if (i[1] == 1)
+ 162   2          {
+ 163   3            T_Flag = 1;
+ 164   3          }
+ 165   2          else
+ 166   2          {
+ 167   3            T_Flag = 0;
+ 168   3          }
+ 169   2          break;
+ 170   2        case 0x31: //强制停止
+ 171   2          if (i[1] == 1)
+ 172   2          {
+ 173   3            IAP_CONTR = 0X20;
+ 174   3          }
+ 175   2          break;
+ 176   2        case 0x32: //单段程序启动
+ 177   2        case 0x35:
+ 178   2          for (k = 0; k < 18; k++)
+C51 COMPILER V9.60.0.0   DATA                                                              03/09/2022 13:22:41 PAGE 4   
 
- 179   3            P_Rom[k] = i[k + 1];
- 180   3          }
- 181   2          break;
- 182   2        case 0x33: //程序位置返回
- 183   2          break;
- 184   2        case 0x2B: //上传标志
- 185   2          if (i[1] == 1)
- 186   2          {
- 187   3            T_YZ = 1;
- 188   3          }
- 189   2          else
- 190   2          {
- 191   3            i[0] = 0xFD;
- 192   3            i[1] = 0x03;
- 193   3            i[2] = 0xA0;
- 194   3            i[3] = 0x00;
- 195   3            i[4] = 0xA0;
- 196   3            UART_Send(i, 5);
- 197   3          }
- 198   2          break;
- 199   2        case 0xA0: //数据验证
- 200   2        {
- 201   3          if (i[1] == 0x10)
- 202   3          {
- 203   4            T_Step++;
- 204   4            T_Step_Temp = T_Step;
- 205   4          }
- 206   3          else if (i[1] == 0x00)
- 207   3          {
- 208   4            T_Step_Temp = T_Step;
- 209   4          }
- 210   3        }
- 211   2        default:
- 212   2          i[0] = 0xFD;
- 213   2          i[1] = 0x03;
- 214   2          i[2] = 0xA0;
- 215   2          i[3] = 0x00;
- 216   2          i[4] = 0xA0;
- 217   2          UART_Send(i, 5);
- 218   2          break;
- 219   2        }
- 220   1      }
- 221          
- 222          void SendData()
- 223          {
- 224   1        uchar idata i[16], k;
- 225   1        i[0] = 0xfd;
- 226   1        i[2] = 0x4f + T_Step_Temp;
- 227   1        switch (T_Step_Temp)
- 228   1        {
- 229   2        case 1:
- 230   2          i[1] = 0x03;
- 231   2          i[2] = 0x50;
- 232   2          i[3] = IapReaduchar(0x2001);
- 233   2          i[4] = i[0] + i[1] + i[2] + i[3];
- 234   2          UART_Send(i, 5);
- 235   2          break;
- 236   2        case 2:
- 237   2        case 3:
- 238   2        case 4:
- 239   2        case 5:
- 240   2        case 6:
-C51 COMPILER V9.60.0.0   DATA                                                              03/08/2022 17:01:37 PAGE 5   
+ 179   2          {
+ 180   3            P_Rom[k] = i[k + 1];
+ 181   3          }
+ 182   2          break;
+ 183   2        case 0x33: //程序位置返回
+ 184   2          break;
+ 185   2        case 0x2B: //上传标志
+ 186   2          if (i[1] == 1)
+ 187   2          {
+ 188   3            T_YZ = 1;
+ 189   3          }
+ 190   2          else
+ 191   2          {
+ 192   3            i[0] = 0xFD;
+ 193   3            i[1] = 0x03;
+ 194   3            i[2] = 0xA0;
+ 195   3            i[3] = 0x00;
+ 196   3            i[4] = 0xA0;
+ 197   3            UART_Send(i, 5);
+ 198   3          }
+ 199   2          break;
+ 200   2        case 0xA0: //数据验证
+ 201   2        {
+ 202   3          if (i[1] == 0x10)
+ 203   3          {
+ 204   4            T_Step++;
+ 205   4            T_Step_Temp = T_Step;
+ 206   4          }
+ 207   3          else if (i[1] == 0x00)
+ 208   3          {
+ 209   4            T_Step_Temp = T_Step;
+ 210   4          }
+ 211   3          else if (i[1] == 0x90)
+ 212   3          {
+ 213   4            T_Num++;
+ 214   4            T_Step_Temp = T_Step;
+ 215   4          }
+ 216   3        }
+ 217   2        default:
+ 218   2          i[0] = 0xFD;
+ 219   2          i[1] = 0x03;
+ 220   2          i[2] = 0xA0;
+ 221   2          i[3] = 0x00;
+ 222   2          i[4] = 0xA0;
+ 223   2          UART_Send(i, 5);
+ 224   2          break;
+ 225   2        }
+ 226   1      }
+ 227          
+ 228          void SendData() //上传数据
+ 229          {
+ 230   1        uchar idata i[16], k, l;
+ 231   1        i[0] = 0xfd;
+ 232   1        i[2] = 0x4f + T_Step_Temp;
+ 233   1        switch (T_Step_Temp)
+ 234   1        {
+ 235   2        case 1:
+ 236   2          i[1] = 0x03;
+ 237   2          i[2] = 0x50;
+ 238   2          i[3] = IapReaduchar(0x2001);
+ 239   2          i[4] = i[0] + i[1] + i[2] + i[3];
+ 240   2          UART_Send(i, 5);
+C51 COMPILER V9.60.0.0   DATA                                                              03/09/2022 13:22:41 PAGE 5   
 
- 241   2        case 7:
- 242   2        case 8:
- 243   2        case 9:
- 244   2        case 10:
- 245   2        case 11:
- 246   2        case 12:
- 247   2        case 13:
- 248   2        case 14:
- 249   2        case 15:
- 250   2        case 16:
- 251   2        case 17:
- 252   2          i[1] = 0x04;
- 253   2          i[3] = IapReaduchar(0x2000 + T_Step_Temp);
- 254   2          i[4] = IapReaduchar(0x2010 + T_Step_Temp);
- 255   2          i[5] = i[0] + i[1] + i[2] + i[3] + i[4];
- 256   2          UART_Send(i, 6);
- 257   2          break;
- 258   2        case 18:
- 259   2        case 19:
- 260   2        case 20:
- 261   2        case 21:
- 262   2        case 22:
- 263   2        case 23:
- 264   2        case 24:
- 265   2        case 25:
- 266   2        case 26:
- 267   2        case 27:
- 268   2        case 28:
- 269   2        case 29:
- 270   2        case 30:
- 271   2        case 31:
- 272   2        case 32:
- 273   2        case 33:
- 274   2          i[1] = 16;
- 275   2          for (k = 0; k < 12; k++)
- 276   2          {
- 277   3            i[k + 3] = IapReaduchar(0x2022 + (T_Step_Temp - 18) * 12 + k);
- 278   3          }
- 279   2          i[15] = i[0] + i[1] + i[2] + i[3] + i[4] + i[5] + i[6] + i[7] + i[8] + i[9] + i[10] + i[11] + i[12] + i[
+ 241   2          break;
+ 242   2        case 2:
+ 243   2        case 3:
+ 244   2        case 4:
+ 245   2        case 5:
+ 246   2        case 6:
+ 247   2        case 7:
+ 248   2        case 8:
+ 249   2        case 9:
+ 250   2        case 10:
+ 251   2        case 11:
+ 252   2        case 12:
+ 253   2        case 13:
+ 254   2        case 14:
+ 255   2        case 15:
+ 256   2        case 16:
+ 257   2        case 17:
+ 258   2          i[1] = 0x04;
+ 259   2          i[3] = IapReaduchar(0x2000 + T_Step_Temp);
+ 260   2          i[4] = IapReaduchar(0x2010 + T_Step_Temp);
+ 261   2          i[5] = i[0] + i[1] + i[2] + i[3] + i[4];
+ 262   2          UART_Send(i, 6);
+ 263   2          break;
+ 264   2        case 18:
+ 265   2        case 19:
+ 266   2        case 20:
+ 267   2        case 21:
+ 268   2        case 22:
+ 269   2        case 23:
+ 270   2        case 24:
+ 271   2        case 25:
+ 272   2        case 26:
+ 273   2        case 27:
+ 274   2        case 28:
+ 275   2        case 29:
+ 276   2        case 30:
+ 277   2        case 31:
+ 278   2        case 32:
+ 279   2        case 33:
+ 280   2          i[1] = 14;
+ 281   2          for (k = 0; k < 12; k++)
+ 282   2          {
+ 283   3            i[k + 3] = IapReaduchar(0x2022 + (T_Step_Temp - 18) * 12 + k);
+ 284   3          }
+ 285   2          i[15] = i[0] + i[1] + i[2] + i[3] + i[4] + i[5] + i[6] + i[7] + i[8] + i[9] + i[10] + i[11] + i[12] + i[
              -13] + i[14];
- 280   2          UART_Send(i, 16);
- 281   2          break;
- 282   2        case 34:
- 283   2          i[1] = 14;
- 284   2          for (k = 0; k < 9; k++)
- 285   2          {
- 286   3            
- 287   3          }
- 288   2          break;
- 289   2        case 35:
- 290   2          break;
- 291   2        case 36:
- 292   2          break;
- 293   2        }
- 294   1        T_Step_Temp = 0;
- 295   1      }
+ 286   2          UART_Send(i, 16);
+ 287   2          break;
+ 288   2        case 34:
+ 289   2          i[1] = 12;
+ 290   2          i[3] = T_Num;
+ 291   2          for (k = 0, l = 9; k < 9; k++, l--)
+ 292   2          {
+ 293   3            i[k + 4] = IapReaduchar((T_Num + 1) * 9 - l + 0x2100); //循环写入数据 2100-25F9里
+ 294   3          }
+ 295   2          i[13] = i[0] + i[1] + i[2] + i[3] + i[4] + i[5] + i[6] + i[7] + i[8] + i[9] + i[10] + i[11] + i[12];
+ 296   2          UART_Send(i, 14);
+ 297   2          if (T_Num >= T_ROM_D0)
+ 298   2          {
+ 299   3            i[1] = 0x03;
+ 300   3            i[2] = 0xa0;
+ 301   3            i[3] = 0xff;
+C51 COMPILER V9.60.0.0   DATA                                                              03/09/2022 13:22:41 PAGE 6   
+
+ 302   3            i[4] = i[0] + i[1] + i[2] + i[3];
+ 303   3            UART_Send(i, 5);
+ 304   3          }
+ 305   2          break;
+ 306   2        case 35:
+ 307   2          i[1] = 12;
+ 308   2          i[3] = T_Num;
+ 309   2          for (k = 0, l = 9; k < 9; k++, l--)
+ 310   2          {
+ 311   3            i[k + 4] = IapReaduchar((T_Num + 1) * 9 - l + 0x2755); //循环写入数据 2755-2DA9里
+ 312   3          }
+ 313   2          i[13] = i[0] + i[1] + i[2] + i[3] + i[4] + i[5] + i[6] + i[7] + i[8] + i[9] + i[10] + i[11] + i[12];
+ 314   2          UART_Send(i, 14);
+ 315   2          if (T_Num >= T_ROM_D1)
+ 316   2          {
+ 317   3            i[1] = 0x03;
+ 318   3            i[2] = 0xa0;
+ 319   3            i[3] = 0xff;
+ 320   3            i[4] = i[0] + i[1] + i[2] + i[3];
+ 321   3            UART_Send(i, 5);
+ 322   3          }
+ 323   2          break;
+ 324   2        case 36:
+ 325   2          i[1] = 12;
+ 326   2          i[3] = T_Num;
+ 327   2          for (k = 0, l = 9; k < 9; k++, l--)
+ 328   2          {
+ 329   3            i[k + 4] = IapReaduchar((T_Num + 1) * 9 - l + 0x2DAA); //循环写入数据 2DAA-33FE里
+ 330   3          }
+ 331   2          i[13] = i[0] + i[1] + i[2] + i[3] + i[4] + i[5] + i[6] + i[7] + i[8] + i[9] + i[10] + i[11] + i[12];
+ 332   2          UART_Send(i, 14);
+ 333   2          if (T_Num >= T_ROM_D2)
+ 334   2          {
+ 335   3            i[1] = 0x03;
+ 336   3            i[2] = 0xa0;
+ 337   3            i[3] = 0xff;
+ 338   3            i[4] = i[0] + i[1] + i[2] + i[3];
+ 339   3            UART_Send(i, 5);
+ 340   3          }
+ 341   2          break;
+ 342   2        case 37:
+ 343   2          i[1] = 0x03;
+ 344   2          i[2] = 0x74;
+ 345   2          i[3] = T_ROM_D0;
+ 346   2          i[4] = T_ROM_D1;
+ 347   2          i[5] = T_ROM_D2;
+ 348   2          i[6] = i[0] + i[1] + i[2] + i[3] + i[4] + i[5];
+ 349   2          UART_Send(i, 7);
+ 350   2          break;
+ 351   2        case 38:
+ 352   2          i[1] = 0x03;
+ 353   2          i[2] = 0x75;
+ 354   2          i[3] = 0x10;
+ 355   2          i[4] = 0x75;
+ 356   2          i[5] = i[0] + i[1] + i[2] + i[3] + i[4];
+ 357   2          UART_Send(i, 7);
+ 358   2          break;
+ 359   2        case 39:
+ 360   2          T_YZ = 0;
+ 361   2          break;
+ 362   2        }
+ 363   1        T_Step_Temp = 0;
+C51 COMPILER V9.60.0.0   DATA                                                              03/09/2022 13:22:41 PAGE 7   
+
+ 364   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1510    ----
+   CODE SIZE        =   2166    ----
    CONSTANT SIZE    =      5    ----
    XDATA SIZE       =   ----    ----
-C51 COMPILER V9.60.0.0   DATA                                                              03/08/2022 17:01:37 PAGE 6   
-
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----       5
-   IDATA SIZE       =   ----      37
+   IDATA SIZE       =   ----      38
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
 
